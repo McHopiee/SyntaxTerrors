@@ -1,54 +1,92 @@
 ---
 layout: base
-title: I'm [Your Full Name]
+title: SYNTAX TERRORS
 hide: true
 ---
 
-Hi! My name is [Your Full Name]
+## IN GIT WE TRUST
 
-### Development Environment
-
-> Coding starts with tools, explore these tools and procedures with a click.
+> #### Easy Buttons 
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <a href="https://github.com/Open-Coding-Society/student">
-        <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
-    </a>
-    <a href="https://open-coding-society.github.io/student">
-        <img src="https://img.shields.io/badge/GitHub%20Pages-327FC7?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages">
-    </a>
-    <a href="https://kasm.nighthawkcodingsociety.com/">
-        <img src="https://img.shields.io/badge/KASM-0078D4?style=for-the-badge&logo=kasm&logoColor=white" alt="KASM">
-    </a>
-    <a href="https://vscode.dev/">
-        <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="VSCode">
-    </a>
+  <button class="btn-md btn-rounded btn-darkblue" onclick="window.location.href='https://github.com/McHopiee/SyntaxTerrors'">
+      𝐆𝐢𝐭𝐇𝐮𝐛
+  </button>
+  <button class="btn-md btn-rounded btn-darkpurple" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/'">
+      𝐆𝐢𝐭𝐇𝐮𝐛 𝐏𝐚𝐠𝐞𝐬
+  </button>
+  <button class="btn-md btn-rounded btn-darkpink" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/teamphilosophy'">
+      𝐓𝐞𝐚𝐦 𝐏𝐡𝐢𝐥𝐨𝐬𝐨𝐩𝐡𝐲 
+  </button>
+  <button class="btn-md btn-rounded btn-otherpink" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/search/'">
+      𝐒𝐞𝐚𝐫𝐜𝐡 
+  </button>
 </div>
 
 <br>
 
-### Class Progress
+<style>
+/* size */
+.btn-md {
+  padding: 7px 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
 
-> Here is my progress through coding, click to see these online
+/* style */
+.btn-rounded {
+  border-radius: 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <a href="{{site.baseurl}}/snake" style="text-decoration: none;">
-        <div style="background-color: #00FF00; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
-            Snake Game
-        </div>
-    </a>
-    <a href="{{site.baseurl}}/turtle" style="text-decoration: none;">
-        <div style="background-color: #FF0000; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
-            Turtle
-        </div>
-    </a>
-</div>
+/* backgrounds */
+.btn-darkblue {
+  background: linear-gradient(135deg, #242847ff, #362a6dff);
+  color: white;
+  box-shadow: 0 6px 12px rgba(41, 47, 76, 0.5);
+}
+.btn-darkpurple {
+  background: linear-gradient(135deg, #4c3164ff, #5e2b6dff);
+  color: white;
+  box-shadow: 0 6px 12px rgba(62, 32, 81, 0.5);
+}
+.btn-darkpink {
+  background: linear-gradient(135deg, #682d68ff, #74286cff);
+  color: white;
+  box-shadow: 0 6px 12px rgba(62, 32, 81, 0.5);
+}
+.btn-darkcyan {
+  background: linear-gradient(135deg, #303c5cff, #3e5b79ff);
+  color: white;
+  box-shadow: 0 6px 12px rgba(31, 59, 75, 0.5);
+}
+.btn-otherpink {
+  background: linear-gradient(135deg, #73436aff, #913c84ff);
+  color: white;
+  box-shadow: 0 6px 12px rgba(81, 32, 68, 0.5);
+}
 
-<br>
-
-<!-- Contact Section -->
-### Get in Touch
-
-> Feel free to reach out if you'd like to collaborate or learn more about our work.
-
-<p style="color: #2A7DB1;">Open Coding Society: <a href="https://opencodingsociety.com" style="color: #2A7DB1; text-decoration: underline;">Socials</a></p>
+/* hovers */
+.btn-darkblue:hover {
+  transform: scale(1.07);
+  box-shadow: 0 8px 18px rgba(30, 35, 63, 0.65);
+}
+.btn-darkpurple:hover {
+  transform: scale(1.07);
+  box-shadow: 0 8px 18px rgba(46, 18, 75, 0.65);
+}
+.btn-darkpink:hover {
+  transform: scale(1.07);
+  box-shadow: 0 8px 18px rgba(85, 25, 92, 0.65);
+}
+.btn-darkcyan:hover {
+  transform: scale(1.07);
+  box-shadow: 0 8px 18px rgba(33, 73, 99, 0.65);
+}
+.btn-otherpink:hover {
+  transform: scale(1.07);
+  box-shadow: 0 8px 18px rgba(94, 24, 76, 0.65);
+}
+</style>
