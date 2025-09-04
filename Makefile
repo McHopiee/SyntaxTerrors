@@ -1,6 +1,6 @@
 # Configuration, override port with usage: make PORT=4610
 PORT ?= 4600
-REPO_NAME ?= syntax-terrors
+REPO_NAME ?= Syntax-Terrors
 LOG_FILE = /tmp/jekyll$(PORT).log
 
 SHELL = /bin/bash -c
