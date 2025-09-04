@@ -1,9 +1,9 @@
-title: Open Coding 
-description: "Class of 2026"
-owner_name: John Mortensen
+title: Syntax-Terrors
+description: "Where bugs go to die"
+owner_name: Syntax Terrors Team
 github_username: jm1021 
-github_repo: "student" 
-baseurl: "/student" 
+github_repo: "Syntax-Terrors" 
+baseurl: "/syntaxterrors" 
 future: true
 remote_theme: jekyll/minima
 minima:
