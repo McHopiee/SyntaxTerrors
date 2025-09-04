@@ -1,9 +1,9 @@
 title: SyntaxTerrors
 description: "IN GIT WE TRUST"
 owner_name: Syntax Terrors Team
-github_username: jm1021 
+github_username: McHopiee
 github_repo: "Syntax-Terrors" 
-baseurl: "/syntaxterrors" 
+baseurl: "/Syntax-Terrors" 
 future: true
 remote_theme: jekyll/minima
 minima:
