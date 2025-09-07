@@ -21,9 +21,11 @@ hide: true
   <button class="btn-md btn-rounded btn-otherpink" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/search/'">
       𝐒𝐞𝐚𝐫𝐜𝐡 
   </button>
-</div>
+  <button class="btn-md btn-rounded btn-darkgreen" onclick="window.location.href='/SyntaxTerrors/games/'">
+      Games 
+  </button>
 
-<br>
+</div>
 
 <style>
 /* size */
