@@ -15,7 +15,7 @@ hide: true
   <button class="btn-md btn-rounded btn-darkpurple" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/'">
       𝐆𝐢𝐭𝐇𝐮𝐛 𝐏𝐚𝐠𝐞𝐬
   </button>
-  <button class="btn-md btn-rounded btn-darkpink" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/teamphilosophy'">
+  <button class="btn-md btn-rounded btn-darkpink" onclick="window.location.href='./teamphilosophy.html'">
       𝐓𝐞𝐚𝐦 𝐏𝐡𝐢𝐥𝐨𝐬𝐨𝐩𝐡𝐲 
   </button>
   <button class="btn-md btn-rounded btn-otherpink" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/search/'">
