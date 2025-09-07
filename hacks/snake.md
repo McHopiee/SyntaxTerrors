@@ -98,6 +98,7 @@ permalink: /snake/
     let lives = 0;
     let powerUp = null; // {x, y}
     let powerUpTimeout = null;
+    let extraLifeGiven = false; // NEW: track milestone life
 
     let showScreen = function(screen_opt){
         SCREEN = screen_opt;
@@ -148,7 +149,6 @@ permalink: /snake/
         }, true);
     }
 
-    // Draw the grid
     let drawGrid = function() {
         ctx.strokeStyle = "#555";
         for (let x = 0; x <= canvas.width; x += BLOCK) {
@@ -186,7 +186,6 @@ permalink: /snake/
                 if(lives > 0){
                     lives--;
                     altLives(lives);
-                    // Wrap snake inside
                     if(snake[0].x < 0) snake[0].x = canvas.width / BLOCK - 1;
                     if(snake[0].x === canvas.width / BLOCK) snake[0].x = 0;
                     if(snake[0].y < 0) snake[0].y = canvas.height / BLOCK - 1;
@@ -211,6 +210,13 @@ permalink: /snake/
             snake[snake.length] = {x:snake[0].x, y:snake[0].y};
             altScore(++score);
             addFood();
+        }
+
+        // ✅ Score milestone extra life only once
+        if(score >= 10 && !extraLifeGiven){
+            lives++;
+            altLives(lives);
+            extraLifeGiven = true;
         }
 
         // Snake eats power-up
@@ -246,6 +252,7 @@ permalink: /snake/
         screen_snake.focus();
         score = 0;
         lives = 0;
+        extraLifeGiven = false; // reset for new game
         altScore(score);
         altLives(lives);
         snake = [{x:0, y:15}];
@@ -296,7 +303,6 @@ permalink: /snake/
             x: Math.floor(Math.random()*((canvas.width/BLOCK)-1)),
             y: Math.floor(Math.random()*((canvas.height/BLOCK)-1))
         };
-        // Remove after 5 seconds
         powerUpTimeout = setTimeout(()=>{ powerUp = null; }, 5000);
     }
 
