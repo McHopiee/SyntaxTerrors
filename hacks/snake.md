@@ -211,6 +211,23 @@ permalink: /snake/
                     newGame();
             }, true);
         }
+        // Draw the background grid
+        let drawGrid = function() {
+            ctx.strokeStyle = "#555"; // color of the grid lines
+        for (let x = 0; x <= canvas.width; x += BLOCK) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+            }
+        for (let y = 0; y <= canvas.height; y += BLOCK) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+            }
+        }
+
         /* Snake is on the Go (Driver Function)  */
         /////////////////////////////////////////////////////////////
         let mainLoop = function(){
@@ -266,9 +283,10 @@ permalink: /snake/
                 activeDot(food.x, food.y);
             }
             // Repaint canvas
-            ctx.beginPath();
+            //ctx.beginPath();
             ctx.fillStyle = "royalblue";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawGrid();  
             // Paint snake
             for(let i = 0; i < snake.length; i++){
                 activeDot(snake[i].x, snake[i].y);
