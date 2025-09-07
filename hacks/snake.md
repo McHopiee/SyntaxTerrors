@@ -297,6 +297,10 @@ permalink: /snake/
             addFood();
             // activate canvas event
             canvas.onkeydown = function(evt) {
+                // Prevent arrow keys from scrolling the page (Hack 1 Pt 2)
+                if([37,38,39,40].includes(evt.keyCode)) {
+                    evt.preventDefault();
+                }
                 changeDir(evt.keyCode);
             }
             mainLoop();
