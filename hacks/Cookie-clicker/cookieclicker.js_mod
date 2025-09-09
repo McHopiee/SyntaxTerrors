@@ -1,0 +1,261 @@
+//@ts-check
+
+const shopContainer = document.getElementById("shop-container");
+const cookieButton = document.getElementById("cookie");
+const cookieCountDisplay = document.getElementById("cookie-count");
+const gameArea = document.getElementById("game-area");
+
+// Ensure all required DOM elements exist
+if (!shopContainer || !cookieButton || !cookieCountDisplay || !gameArea) {
+  console.error("One or more required DOM elements are missing.");
+}
+
+const cookie = {
+    cookieMulti: 1,
+    cookies: 0,
+    addCookies: (amount) => {
+      this.cookies += amount;
+      this.updateDisplay();
+      localStorage.setItem("cookies", this.cookies);
+    },
+    updateDisplay: () => {
+      if (cookieCountDisplay) {
+        cookieCountDisplay.innerHTML = `${cookie.cookies}`;
+      } else {
+        console.error("cookieCountDisplay element is missing.");
+      }
+    },
+    fetchStoredCookies: () => {
+      const storedCookies = localStorage.getItem("cookies");
+      if (storedCookies !== null) {
+        cookie.cookies = Number(storedCookies);
+        cookie.updateDisplay();
+      }
+    },
+  };
+  
+const shop = {
+  upgrades: [],
+  tab: "shop",
+  forSale: [],
+  updateShopDisplay() {
+    if (!shopContainer) return;
+
+    shopContainer.innerHTML = "";
+    const shopTitle = document.createElement("div");
+    shopTitle.className = "text-xl font-bold mb-4 text-center";
+    shopTitle.innerHTML = "SHOP";
+    shopContainer.appendChild(shopTitle);
+
+    const shopSwap = document.createElement("button");
+    shopSwap.className = `bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 mb-2`;
+    shopSwap.innerHTML = this.tab === "upgrades" ? "Switch to Shop" : "Switch to Upgrades";
+    shopSwap.addEventListener("click", () => {
+      this.switchTab(this.tab === "upgrades" ? "shop" : "upgrades");
+    });
+    shopContainer.appendChild(shopSwap);
+
+    const itemsToDisplay = this.tab === "upgrades" ? this.upgrades : this.forSale;
+    itemsToDisplay.forEach((item, index) => {
+      const shopButton = document.createElement("button");
+      shopButton.className = `bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 mb-2`;
+      const amountOwned = gameLoop.getAmount(item.name);
+      shopButton.innerHTML = `${item.emoji} ${item.name} (${item.price} 🍪) x${amountOwned}`;      
+      shopContainer.appendChild(shopButton);
+
+      shopButton.addEventListener("click", () => {
+        if (cookie.cookies < item.price) {
+          alert("Insufficient Cookies");
+          return;
+        }
+        cookie.addCookies(-item.price);
+
+        if (this.tab === "upgrades") {
+          gameLoop.updateCookieMulti(item.name, item.multiplier);
+        } else {
+          gameLoop.addAutoClicker(item.name, item.cookiesPerSecond);
+          this.updateForSalePrice(
+            Math.floor(item.originalPrice * (gameLoop.getAmount(item.name) + 1)),
+            index
+          );
+        }
+        shopButton.remove();
+      });
+    });
+  },
+  addItemForSale(item) {
+    //const newItem = { ...item, originalPrice: item.price }; // Fixed spread operator usage
+    this.forSale.push({
+        ...item, 
+        originalPrice: item.price,
+    });
+    this.updateShopDisplay();
+  },
+  updateForSalePrice(newPrice, index) {
+    if (this.forSale[index]) {
+      this.forSale[index].price = newPrice;
+      this.updateShopDisplay();
+    } else {
+      console.error(`Item at index ${index} does not exist.`);
+    }
+  },
+  switchTab(newTab) {
+    this.tab = newTab;
+    this.forSale = [];
+    this.updateShopDisplay();
+  
+    const items = newTab === "shop" ? shopItems : this.upgrades;
+    items.forEach((item) => {
+      const amount = gameLoop.getAmount(item.name) || 0;
+  
+      // Cookie Clicker style: basePrice * (amount + 1)
+      const price = item.price * (amount + 1);
+  
+      this.addItemForSale({ ...item, price });
+    });
+  }  
+};
+
+const gameLoop = {
+  autoClickers: {},
+  upgrades: {},
+  cookiesPerSecond: 0,
+  intervalId: -1,
+  addAutoClicker(itemName, cps) {
+    this.autoClickers[itemName] = (this.autoClickers[itemName] || 0) + 1;
+    this.cookiesPerSecond += cps;
+    localStorage.setItem("savedShop", JSON.stringify(this.autoClickers));
+    this.runLoop();
+  },
+  updateCookieMulti(itemName, amt) {
+    this.upgrades[itemName] = amt;
+    localStorage.setItem("savedUpgrades", JSON.stringify(this.upgrades));
+    cookie.cookieMulti += amt;
+  },
+  runLoop() {
+    if (this.intervalId > 0) {
+      clearInterval(this.intervalId);
+    }
+    this.intervalId = setInterval(() => {
+      cookie.addCookies(this.cookiesPerSecond);
+    }, 1000);
+  },
+  fetchSavedData() {
+    const data = localStorage.getItem("savedShop");
+    if (data) {
+      const autoClickersData = JSON.parse(data);
+      this.autoClickers = autoClickersData;
+
+      Object.keys(autoClickersData).forEach((itemName) => {
+        const amount = autoClickersData[itemName];
+        const item = shopItems.find((it) => it.name === itemName);
+        if (item) {
+          this.cookiesPerSecond += amount * item.cookiesPerSecond;
+        }
+      });
+      this.runLoop();
+    }
+
+    fetchSavedData() {
+  // Reset values before recalculating
+  this.cookiesPerSecond = 0;
+  this.autoClickers = {};
+  this.upgrades = {};
+
+  // Restore auto-clickers
+  const data = localStorage.getItem("savedShop");
+  if (data) {
+    const autoClickersData = JSON.parse(data);
+    this.autoClickers = autoClickersData;
+
+    Object.keys(autoClickersData).forEach((itemName) => {
+      const amount = autoClickersData[itemName];
+      const item = shopItems.find((it) => it.name === itemName);
+      if (item) {
+        this.cookiesPerSecond += amount * item.cookiesPerSecond;
+      }
+    });
+
+    this.runLoop();
+  }
+
+  // Restore upgrades
+  const upgradeData = localStorage.getItem("savedUpgrades");
+  if (upgradeData) {
+    const savedUpgrades = JSON.parse(upgradeData);
+    this.upgrades = savedUpgrades;
+
+    // Reset cookieMulti before applying upgrades
+    cookie.cookieMulti = 1;
+    Object.keys(savedUpgrades).forEach((itemName) => {
+      cookie.cookieMulti += savedUpgrades[itemName];
+    });
+  }
+},
+fetchSavedData() {
+    // Reset values before recalculating
+    this.cookiesPerSecond = 0;
+    this.autoClickers = {};
+    this.upgrades = {};
+  
+    // Restore auto-clickers
+    const data = localStorage.getItem("savedShop");
+    if (data) {
+      const autoClickersData = JSON.parse(data);
+      this.autoClickers = autoClickersData;
+  
+      Object.keys(autoClickersData).forEach((itemName) => {
+        const amount = autoClickersData[itemName];
+        const item = shopItems.find((it) => it.name === itemName);
+        if (item) {
+          this.cookiesPerSecond += amount * item.cookiesPerSecond;
+        }
+      });
+  
+      this.runLoop();
+    }
+  
+    // Restore upgrades
+    const upgradeData = localStorage.getItem("savedUpgrades");
+    if (upgradeData) {
+      const savedUpgrades = JSON.parse(upgradeData);
+      this.upgrades = savedUpgrades;
+  
+      // Reset cookieMulti before applying upgrades
+      cookie.cookieMulti = 1;
+      Object.keys(savedUpgrades).forEach((itemName) => {
+        cookie.cookieMulti += savedUpgrades[itemName];
+      });
+    }
+  }
+
+    const upgradeData = localStorage.getItem("savedUpgrades");
+    if (upgradeData) {
+      this.upgrades = JSON.parse(upgradeData);
+      Object.keys(this.upgrades).forEach((itemName) => {
+        cookie.cookieMulti += this.upgrades[itemName];
+      });
+    }
+  },
+  getAmount(cookieName) {
+    return this.autoClickers[cookieName] || 0;
+  },
+};
+
+const shopItems = [
+  { name: "Grandma", emoji: "👵", price: 69, cookiesPerSecond: 1 },
+  { name: "Factory", emoji: "🏭", price: 400, cookiesPerSecond: 4 },
+  { name: "Mango Temple", emoji: "🥭", price: 2000, cookiesPerSecond: 10 },
+  { name: "Bank", emoji: "🏦", price: 6741, cookiesPerSecond: 20 },
+];
+
+const x2Click = { name: "2X Clicks", emoji: "🖱", price: 150, multiplier: 2 };
+shop.upgrades.push(x2Click);
+
+shopItems.forEach((item) => shop.addItemForSale(item));
+gameLoop.fetchSavedData();
+cookie.fetchStoredCookies();
+
+cookieButton?.addEventListener("click", () => {
+  cookie.addCookies(1 * cookie.cookieMulti);
+});
