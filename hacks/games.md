@@ -22,7 +22,7 @@ permalink: /games/
     Pong
   </button>
 
-  <button class="btn-md btn-rounded btn-gamemagenta" onclick="window.location.href='/game4'">
+  <button class="btn-md btn-rounded btn-gamemagenta" onclick="window.location.href='/SyntaxTerrors/cookie-clicker-game/'">
     Game 4
   </button>
 

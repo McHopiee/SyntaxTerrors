@@ -10,7 +10,7 @@ permalink: /cookie-clicker-game/
 <div class="col-span-1 bg-white p-4 shadow-lg flex flex-col" id="shop-container">
     <div class="text-xl font-bold mb-4 text-center">SHOP</div>
     <button id="autoClickerBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mb-2">
-    👵Grandma (Cost: 69)
+    😍 Grandma (Cost: 67)
     </button>
 <button id="cursorBtn"
     class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 mb-2 rounded shadow">
@@ -41,8 +41,8 @@ permalink: /cookie-clicker-game/
     </div>
     <!-- Cookie Button -->
     <div id="cookie" 
-        class="w-48 h-48 bg-cover bg-center rounded-full cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-transform duration-200 ease-out flex items-center justify-center bg-white">
-        <img src="/images/food/baseCookie.png" class="w-full h-full rounded-full select-none pointer-events-none" />
+        class="w-64 h-64 bg-cover bg-center rounded-full cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-transform duration-200 ease-out flex items-center justify-center bg-white">
+        <img src="/images/about/sugarcookie.png" class="w-full h-full rounded-full select-none pointer-events-none" />
     </div>
     <!-- Counter -->
     <div id="counter" class="mt-6 text-2xl font-semibold text-brown-900 bg-white/80 px-6 py-3 rounded-lg shadow-md">
