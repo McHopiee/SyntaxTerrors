@@ -17,6 +17,42 @@ permalink: /cayman-theme-game/
   p {
     margin-bottom: 5px !important;
   }
+
+  /* Popup styles */
+  #docChallenge {
+    max-width: 760px;
+    margin: 10px auto;
+    padding: 14px;
+    border-radius: 10px;
+    background: linear-gradient(180deg,#fff,#fafafa);
+    border: 1px solid #ccc;
+    text-align: center;
+    font-family: system-ui, Arial, sans-serif;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  #docChallenge a {
+    color: #d63384;
+    font-weight: 700;
+  }
+
+  #docInput {
+    padding: 8px;
+    font-size: 14px;
+    margin-right: 8px;
+    width: 55%;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+  }
+
+  #docSubmit, #docCancel {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #666;
+    background: #fff;
+    cursor: pointer;
+  }
 </style>
 
 <canvas id="gameCanvas" width="600" height="400"></canvas>
@@ -26,7 +62,26 @@ permalink: /cayman-theme-game/
   Next Level ▶
 </button>
 
-
+<!-- Hack Popup for Documentation Challenge (hidden until pink brick is hit) -->
+<div id="docChallenge" style="display:none;">
+  <p style="margin:6px 0;font-size:16px;">
+    🎉 You discovered Professor Mort's <strong>Pink Knowledge Brick</strong>! 🎉
+  </p>
+  <p style="margin:6px 0;">
+    To proceed, please <strong>open and read</strong> the theme documentation below, then paste the summary from the <em>very bottom</em> of that page into the box.
+  </p>
+  <p style="margin:6px 0;">
+    <a id="docLink" href="https://pages.opencodingsociety.com/github/pages/theme" target="_blank" rel="noopener">Open Theme Documentation (opens in a new tab)</a>
+  </p>
+  <div style="margin-top:8px;">
+    <input id="docInput" type="text" placeholder="Paste the summary from the bottom of the docs here">
+    <button id="docSubmit" onclick="checkDocAnswer()">Submit</button>
+    <button id="docCancel" onclick="cancelDocChallenge()">Cancel</button>
+  </div>
+  <p style="margin-top:8px;font-size:13px;color:#555;">
+    (Tip: look for keywords like <em>Makefile</em>, <em>_themes</em>, and <em>opencs.html</em> at the bottom.)
+  </p>
+</div>
 
 <script>
   const canvas = document.getElementById("gameCanvas");
@@ -35,7 +90,7 @@ permalink: /cayman-theme-game/
 
   // --- Levels / pause ---
   let level = 1;
-  const levelSpeedScale = 1.12; // ball speed multiplier each level
+  const levelSpeedScale = 1.12;
   let paused = false;
 
   // Paddle
@@ -59,7 +114,7 @@ permalink: /cayman-theme-game/
   let lives = 3;
 
   // Blocks
-  let brickRowCount = 4;       // CHANGED: let (so we can increase rows)
+  let brickRowCount = 4;
   const brickColumnCount = 6;
   const brickWidth = 75;
   const brickHeight = 20;
@@ -68,7 +123,7 @@ permalink: /cayman-theme-game/
   const brickOffsetLeft = 50;
 
   let bricks = [];
-  const powerUpChance = 0.3; // 30% chance a brick contains a powerup
+  const powerUpChance = 0.3;
 
   function initBricks() {
     bricks = [];
@@ -76,7 +131,8 @@ permalink: /cayman-theme-game/
       bricks[c] = [];
       for (let r = 0; r < brickRowCount; r++) {
         const hasPowerUp = Math.random() < powerUpChance;
-        bricks[c][r] = { x: 0, y: 0, status: 1, powerUp: hasPowerUp };
+        const isHack = (c === 2 && r === 1); // special pink brick
+        bricks[c][r] = { x: 0, y: 0, status: 1, powerUp: hasPowerUp, hack: isHack };
       }
     }
   }
@@ -87,12 +143,10 @@ permalink: /cayman-theme-game/
   const powerUpSize = 20;
   const powerUpFallSpeed = 1.5;
 
-  // Active powerup state
   let activePowerUp = null;
   let powerUpTimer = 0;
-  const powerUpDuration = 5000; // 5 seconds
+  const powerUpDuration = 5000;
 
-  // Input handling
   document.addEventListener("keydown", keyDownHandler);
   document.addEventListener("keyup", keyUpHandler);
   document.addEventListener("mousemove", mouseMoveHandler);
@@ -120,16 +174,16 @@ permalink: /cayman-theme-game/
       for (let r = 0; r < brickRowCount; r++) {
         let b = bricks[c][r];
         if (b.status === 1) {
-          if (
-            x > b.x &&
-            x < b.x + brickWidth &&
-            y > b.y &&
-            y < b.y + brickHeight
-          ) {
+          if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
             dy = -dy;
             b.status = 0;
-
             score++;
+
+            if (b.hack) {
+              paused = true;
+              document.getElementById("docChallenge").style.display = "block";
+              return; // stop further collision effects
+            }
 
             if (b.powerUp) {
               powerUps.push({ x: b.x + brickWidth / 2, y: b.y, active: true });
@@ -150,15 +204,12 @@ permalink: /cayman-theme-game/
     return count;
   }
 
-  // Powerup mechanics
+  // Powerup drawing
   function drawPowerUps() {
     for (let i = 0; i < powerUps.length; i++) {
       let p = powerUps[i];
       if (p.active) {
-        // Draw colorful circle with "P"
-        let gradient = ctx.createRadialGradient(
-          p.x, p.y, 5, p.x, p.y, powerUpSize
-        );
+        let gradient = ctx.createRadialGradient(p.x, p.y, 5, p.x, p.y, powerUpSize);
         gradient.addColorStop(0, "yellow");
         gradient.addColorStop(1, "red");
 
@@ -174,22 +225,19 @@ permalink: /cayman-theme-game/
         ctx.textBaseline = "middle";
         ctx.fillText("P", p.x, p.y);
 
-        // Move down
         p.y += powerUpFallSpeed;
 
-        // Paddle catches powerup
         if (
           p.y + powerUpSize / 2 >= canvas.height - paddleHeight &&
           p.x > paddleX &&
           p.x < paddleX + paddleWidth
         ) {
           p.active = false;
-          paddleWidth = basePaddleWidth + 40; // effect: enlarge paddle
+          paddleWidth = basePaddleWidth + 40;
           activePowerUp = "Wide Paddle";
-          powerUpTimer = Date.now(); // start timer
+          powerUpTimer = Date.now();
         }
 
-        // Missed powerup
         if (p.y > canvas.height) {
           p.active = false;
         }
@@ -197,7 +245,6 @@ permalink: /cayman-theme-game/
     }
   }
 
-  // Draw timer bar if powerup active
   function drawPowerUpTimer() {
     if (activePowerUp) {
       let elapsed = Date.now() - powerUpTimer;
@@ -210,17 +257,11 @@ permalink: /cayman-theme-game/
       ctx.fillRect(canvas.width - 20, 20, barWidth, barHeight);
 
       ctx.fillStyle = "lime";
-      ctx.fillRect(
-        canvas.width - 20,
-        20 + (barHeight - fillHeight),
-        barWidth,
-        fillHeight
-      );
+      ctx.fillRect(canvas.width - 20, 20 + (barHeight - fillHeight), barWidth, fillHeight);
 
       ctx.strokeStyle = "black";
       ctx.strokeRect(canvas.width - 20, 20, barWidth, barHeight);
 
-      // If timer expired
       if (remaining <= 0) {
         activePowerUp = null;
         paddleWidth = basePaddleWidth;
@@ -228,7 +269,6 @@ permalink: /cayman-theme-game/
     }
   }
 
-  // Drawing functions
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -257,8 +297,11 @@ permalink: /cayman-theme-game/
           ctx.beginPath();
           ctx.rect(brickX, brickY, brickWidth, brickHeight);
 
-          if (bricks[c][r].powerUp) {
-            // Make powerup bricks glow yellow
+          if (bricks[c][r].hack) {
+            ctx.fillStyle = "pink";
+            ctx.shadowColor = "magenta";
+            ctx.shadowBlur = 15;
+          } else if (bricks[c][r].powerUp) {
             ctx.fillStyle = "gold";
             ctx.shadowColor = "orange";
             ctx.shadowBlur = 10;
@@ -275,38 +318,30 @@ permalink: /cayman-theme-game/
   }
 
   function resetBallAndPaddle() {
-    // keep direction but reset position; adjust speed to current dx/dy magnitude
     const speed = Math.hypot(dx, dy);
     x = canvas.width / 2;
     y = canvas.height - 30;
-    // random upward angle between 30° and 75°
     const angle = (Math.PI / 6) + Math.random() * (Math.PI / 3);
     const sign = Math.random() < 0.5 ? -1 : 1;
     dx = sign * speed * Math.cos(angle);
     dy = -Math.abs(speed * Math.sin(angle));
     paddleX = (canvas.width - paddleWidth) / 2;
-
-    // clear any falling powerups
     powerUps = [];
-    // reset active powerup on new level
     activePowerUp = null;
     paddleWidth = basePaddleWidth;
   }
 
   function nextLevel() {
-    // Increase difficulty: speed up ball and add a row (up to fit)
     const currentSpeed = Math.hypot(dx, dy) * levelSpeedScale;
     const theta = Math.atan2(dy, dx);
     dx = currentSpeed * Math.cos(theta);
     dy = currentSpeed * Math.sin(theta);
 
     level++;
-    if (brickRowCount < 8) brickRowCount++; // cap to keep on-screen
+    if (brickRowCount < 8) brickRowCount++;
 
     initBricks();
     resetBallAndPaddle();
-
-    // hide button and resume
     paused = false;
     nextLevelBtn.style.display = "none";
     requestAnimationFrame(draw);
@@ -326,9 +361,7 @@ permalink: /cayman-theme-game/
     ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
   }
 
-
   function draw() {
-    // Render current frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
     drawBall();
@@ -339,15 +372,12 @@ permalink: /cayman-theme-game/
     drawLives();
     collisionDetection();
 
-    // If all bricks cleared, pause and show Next Level button
     if (!paused && remainingBricks() === 0) {
       paused = true;
       nextLevelBtn.style.display = "block";
-      // Do not schedule next frame; freeze the scene until button press
       return;
     }
 
-    // Ball movement
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
     if (y + dy < ballRadius) dy = -dy;
     else if (y + dy > canvas.height - ballRadius) {
@@ -357,15 +387,14 @@ permalink: /cayman-theme-game/
         lives--;
         if (!lives) {
           alert("GAME OVER");
-          document.location.reload(); // Restart game on miss
+          document.location.reload();
         } else {
-          x = canvas.width/2; 
+          x = canvas.width / 2;
           y = canvas.height - 30;
           dx = 2 * Math.sign(dx);
           dy = -2;
           paddleX = (canvas.width - paddleWidth) / 2;
         }
-        
       }
     }
 
@@ -379,6 +408,37 @@ permalink: /cayman-theme-game/
     y += dy;
 
     if (!paused) requestAnimationFrame(draw);
+  }
+
+  // Challenge logic
+  function checkDocAnswer() {
+    const input = document.getElementById("docInput").value.trim().toLowerCase();
+    // check if input contains at least two keywords
+    const keywords = ["makefile","_themes","opencs.html","override","layouts"];
+    let hits = keywords.filter(k => input.includes(k)).length;
+
+    if (hits >= 2) {
+      score = 9999;
+      alert("🎉 Congratulations! You read the sacred theme scrolls. Mr. Mortensen salutes you with eternal high scores! 🎉");
+      document.location.reload();
+    } else {
+      lives--;
+      if (lives <= 0) {
+        alert("💀 Hey! You skipped your homework again. GAME OVER, courtesy of Mr. Mort!");
+        document.location.reload();
+      } else {
+        alert("⚠️ Wrong answer! You lose a life for not reading Mr. Mort's wise words!");
+        document.getElementById("docChallenge").style.display = "none";
+        paused = false;
+        draw();
+      }
+    }
+  }
+
+  function cancelDocChallenge() {
+    document.getElementById("docChallenge").style.display = "none";
+    paused = false;
+    draw();
   }
 
   // Start
