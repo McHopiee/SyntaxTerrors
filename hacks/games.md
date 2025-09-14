@@ -26,6 +26,10 @@ permalink: /games/
     Game 4
   </button>
 
+   <button class="btn-md btn-rounded btn-gamemagenta" onclick="window.location.href='/SyntaxTerrors/cayman-theme-game/'">
+    Cayman Theme Gamified
+  </button>
+
 </div>
 
 <style>
