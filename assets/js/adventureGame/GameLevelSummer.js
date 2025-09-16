@@ -1,5 +1,5 @@
 // Minimal desert level: only background and player
-import GamEnvBackground from './GameEngine/GameEnvBackground.js';
+import GameEnvBackground from './GameEngine/GameEnvBackground.js';
 import Player from './GameEngine/Player.js';
 
 class GameLevelSummer {
@@ -26,7 +26,7 @@ class GameLevelSummer {
       src: sprite_src_blank,
       SCALE_FACTOR: BLANK_SCALE_FACTOR,
       STEP_FACTOR: 1000,
-      ANIMATION_RATE: 15,
+      ANIMATION_RATE: 20,
       INIT_POSITION: { x: 0, y: height - (height / BLANK_SCALE_FACTOR) },
       pixels: { height: 70, width: 216 },
       orientation: { rows: 2, columns: 6 },
@@ -44,7 +44,7 @@ class GameLevelSummer {
 
     // Only background and player in this level
     this.classes = [
-      { class: GamEnvBackground, data: image_data_summer },
+      { class: GameEnvBackground, data: image_data_summer },
       { class: Player, data: sprite_data_blank }
     ];
   }
