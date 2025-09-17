@@ -40,12 +40,12 @@ permalink: /cookie-clicker-game/
 <script>
   // Shop items definition
   const shopItems = [
-    { id: "cursorBtn", name: "🖱️ Cursor", cost: 15, cps: 1, color: "green" },
-    { id: "grandmaBtn", name: "👵 Grandma", cost: 100, cps: 5, color: "blue" },
-    { id: "factoryBtn", name: "🏭 Factory", cost: 1000, cps: 50, color: "purple" },
-    { id: "bankBtn", name: "🏦 Bank", cost: 10000, cps: 500, color: "pink" },
-    { id: "templeBtn", name: "⛪ Temple", cost: 50000, cps: 2000, color: "indigo" },
-    { id: "portalBtn", name: "🌌 Portal", cost: 500000, cps: 10000, color: "red" }
+    { id: "cursorBtn", name: "🖱️ Cursor", emoji: "🖱️", cost: 15, cps: 1, color: "green" },
+    { id: "grandmaBtn", name: "👵 Grandma", emoji: "👵", cost: 100, cps: 5, color: "blue" },
+    { id: "factoryBtn", name: "🏭 Factory", emoji: "🏭", cost: 1000, cps: 50, color: "purple" },
+    { id: "bankBtn", name: "🏦 Bank", emoji: "🏦", cost: 10000, cps: 500, color: "pink" },
+    { id: "templeBtn", name: "⛪ Temple", emoji: "⛪", cost: 50000, cps: 2000, color: "indigo" },
+    { id: "portalBtn", name: "🌌 Portal", emoji: "🌌", cost: 500000, cps: 10000, color: "red" }
   ];
 
   // Game state
@@ -58,6 +58,7 @@ permalink: /cookie-clicker-game/
   const cookieCountEl = document.getElementById("cookie-count");
   const cpsValueEl = document.getElementById("cps-value");
   const shopContainer = document.getElementById("shop-items");
+  const gameArea = document.getElementById("game-area");
 
   // Create shop buttons
   shopItems.forEach(item => {
@@ -80,6 +81,7 @@ permalink: /cookie-clicker-game/
       upgrade.cost = Math.floor(upgrade.cost * 1.25); // inflation
       document.getElementById(item.id).textContent = `${item.name} (Cost: ${upgrade.cost}) | Owned: ${upgrade.count}`;
       updateCounter();
+      flyEmoji(item.emoji);
     }
   }
 
@@ -101,6 +103,18 @@ permalink: /cookie-clicker-game/
     floating.style.animation = "floatUp 1s ease-out forwards";
     document.body.appendChild(floating);
     setTimeout(() => floating.remove(), 1000);
+  }
+
+  // Flying emoji animation (when buying)
+  function flyEmoji(emoji) {
+    const fly = document.createElement("span");
+    fly.textContent = emoji;
+    fly.className = "absolute text-4xl";
+    fly.style.left = Math.random() * (gameArea.offsetWidth - 50) + "px";
+    fly.style.top = Math.random() * (gameArea.offsetHeight - 50) + "px";
+    fly.style.animation = "flyAround 2s ease-out forwards";
+    gameArea.appendChild(fly);
+    setTimeout(() => fly.remove(), 2000);
   }
 
   // Update counters
@@ -141,5 +155,11 @@ permalink: /cookie-clicker-game/
 @keyframes floatUp {
   from { transform: translateY(0); opacity: 1; }
   to { transform: translateY(-50px); opacity: 0; }
+}
+
+@keyframes flyAround {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  50% { transform: translate(50px,-50px) scale(1.3); opacity: 0.8; }
+  100% { transform: translate(-30px,60px) scale(0.8); opacity: 0; }
 }
 </style>
