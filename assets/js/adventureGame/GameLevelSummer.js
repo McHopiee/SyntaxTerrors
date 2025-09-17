@@ -1,5 +1,5 @@
 // Minimal desert level: only background and player
-import GameEnvBackground from './GameEngine/GameEnvBackground.js';
+import GameEnvBackground from 'images/m&m/M&M_background.png';
 import Player from './GameEngine/Player.js';
 
 class GameLevelSummer {
