@@ -9,7 +9,7 @@ class GameLevelSummer {
     const height = gameEnv.innerHeight;
     const path = gameEnv.path;
 
-    // Background data
+    // background
     const image_src_summer = path + "/images/mm/mm_background.png";
     const image_data_summer = {
       name: 'summer',
@@ -18,7 +18,7 @@ class GameLevelSummer {
       pixels: { height: 1535, width: 2730 }
     };
 
-    // Player data
+    // player
     const sprite_src_blank = path + "/images/mm/blankwalking.png";
     const BLANK_SCALE_FACTOR = 6;
     const sprite_data_blank = {
@@ -43,18 +43,37 @@ class GameLevelSummer {
       keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
 
-    // NPC data — can reuse blankwalking or a different sprite sheet
-    const sprite_src_red = path + "/images/mm/redanim.png"; // add an npc.png to your images
+    //npcs
+    const sprite_src_red = path + "/images/mm/redanim.png"; 
     const RED_SCALE_FACTOR = 6;
     const sprite_data_red = {
       id: 'Red M&M',
-      greeting: "Open up your VSCode!",
+      greeting: "Open up your VSCode using code . in terminal!",
       src: sprite_src_red,
       SCALE_FACTOR: RED_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 30,
-      INIT_POSITION: { x: 900, y: height - (height / RED_SCALE_FACTOR)-400 }, // NPC stands to the right
+      INIT_POSITION: { x: 500, y: height - (height / RED_SCALE_FACTOR)-100 }, 
       pixels: { height: 36, width: 180 },
+      orientation: { rows: 1, columns: 5 },
+      down: { row: 0, start: 0, columns: 5 },
+      left: { row: 1, start: 0, columns: 5 },
+      right: { row: 0, start: 0, columns: 5 },
+      up: { row: 0, start: 0, columns: 5 },
+      hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
+    };
+
+    const sprite_src_orange = path + "/images/mm/orangeanim.png"; 
+    const ORANGE_SCALE_FACTOR = 6;
+    const sprite_data_orange = {
+      id: 'Orange M&M',
+      greeting: "Activate your virtual environment.",
+      src: sprite_src_orange,
+      SCALE_FACTOR: ORANGE_SCALE_FACTOR,
+      STEP_FACTOR: 1000,
+      ANIMATION_RATE: 30,
+      INIT_POSITION: { x: 1000, y: height - (height / ORANGE_SCALE_FACTOR)-400 }, 
+      pixels: { height: 35, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },
       left: { row: 1, start: 0, columns: 5 },
@@ -66,7 +85,8 @@ class GameLevelSummer {
     this.classes = [
       { class: GameEnvBackground, data: image_data_summer },
       { class: Player, data: sprite_data_blank },
-      { class: Npc, data: sprite_data_red }
+      { class: Npc, data: sprite_data_red },
+      { class: Npc, data: sprite_data_orange }
     ];
   }
 }
