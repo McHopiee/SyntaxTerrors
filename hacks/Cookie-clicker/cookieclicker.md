@@ -1,7 +1,7 @@
 ---
 layout: base
 title: Cookie Clicker
-permalink: /cookieclicker/
+permalink: /cookie-clicker-game/
 ---
 
 <div class="grid grid-cols-4 gap-4 aspect-square">
