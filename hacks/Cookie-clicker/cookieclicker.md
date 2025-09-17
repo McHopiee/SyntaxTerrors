@@ -1,7 +1,7 @@
 ---
 layout: base
-title: Cookie Clicker Game
-permalink: /cookie-clicker-game/
+title: Cookie Clicker
+permalink: /cookieclicker/
 ---
 
 <div class="grid grid-cols-4 gap-4 aspect-square">
@@ -21,12 +21,17 @@ permalink: /cookie-clicker-game/
     <!-- Cookie Button -->
     <div id="cookie" 
       class="w-64 h-64 bg-cover bg-center rounded-full cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-transform duration-200 ease-out flex items-center justify-center bg-white">
-      <img src="/images/about/sugarcookie.png" class="w-full h-full rounded-full select-none pointer-events-none" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1047/1047711.png" class="w-full h-full rounded-full select-none pointer-events-none" />
     </div>
 
     <!-- Counter -->
     <div id="counter" class="mt-6 text-2xl font-semibold text-brown-900 bg-white/80 px-6 py-3 rounded-lg shadow-md">
       Cookies: <span id="cookie-count" class="font-bold text-orange-600">0</span>
+    </div>
+
+    <!-- CPS Display -->
+    <div id="cps-counter" class="mt-2 text-lg font-medium text-brown-800">
+      CPS: <span id="cps-value">0</span>
     </div>
   </div>
 </div>
@@ -36,11 +41,11 @@ permalink: /cookie-clicker-game/
   // Shop items definition
   const shopItems = [
     { id: "cursorBtn", name: "🖱️ Cursor", cost: 15, cps: 1, color: "green" },
-    { id: "autoClickerBtn", name: "😍 Grandma", cost: 67, cps: 5, color: "blue" },
-    { id: "factoryBtn", name: "🏭 Factory", cost: 500, cps: 50, color: "purple" },
-    { id: "bankBtn", name: "🏦 Bank", cost: 67410, cps: 500, color: "blue" },
-    { id: "templeBtn", name: "⛪ Mango Temple", cost: 50000, cps: 2000, color: "indigo" },
-    { id: "chaoticOhioBtn", name: "⏳ Chaotic Ohio", cost: 6700000, cps: 10000, color: "purple" }
+    { id: "grandmaBtn", name: "👵 Grandma", cost: 100, cps: 5, color: "blue" },
+    { id: "factoryBtn", name: "🏭 Factory", cost: 1000, cps: 50, color: "purple" },
+    { id: "bankBtn", name: "🏦 Bank", cost: 10000, cps: 500, color: "pink" },
+    { id: "templeBtn", name: "⛪ Temple", cost: 50000, cps: 2000, color: "indigo" },
+    { id: "portalBtn", name: "🌌 Portal", cost: 500000, cps: 10000, color: "red" }
   ];
 
   // Game state
@@ -51,6 +56,7 @@ permalink: /cookie-clicker-game/
   };
 
   const cookieCountEl = document.getElementById("cookie-count");
+  const cpsValueEl = document.getElementById("cps-value");
   const shopContainer = document.getElementById("shop-items");
 
   // Create shop buttons
@@ -58,7 +64,7 @@ permalink: /cookie-clicker-game/
     const btn = document.createElement("button");
     btn.id = item.id;
     btn.textContent = `${item.name} (Cost: ${item.cost})`;
-    btn.className = `bg-${item.color}-500 hover:bg-${item.color}-600 text-white px-4 py-2 mb-2 rounded shadow`;
+    btn.className = `bg-${item.color}-500 hover:bg-${item.color}-600 text-white px-4 py-2 mb-2 rounded shadow transition`;
     btn.addEventListener("click", () => buyUpgrade(item));
     shopContainer.appendChild(btn);
     gameState.upgrades[item.id] = { count: 0, cost: item.cost };
@@ -71,8 +77,8 @@ permalink: /cookie-clicker-game/
       gameState.cookies -= upgrade.cost;
       upgrade.count++;
       gameState.cps += item.cps;
-      upgrade.cost = Math.floor(upgrade.cost * 1.25); // cost inflation
-      document.getElementById(item.id).textContent = `${item.name} (Cost: ${upgrade.cost})`;
+      upgrade.cost = Math.floor(upgrade.cost * 1.25); // inflation
+      document.getElementById(item.id).textContent = `${item.name} (Cost: ${upgrade.cost}) | Owned: ${upgrade.count}`;
       updateCounter();
     }
   }
@@ -97,9 +103,10 @@ permalink: /cookie-clicker-game/
     setTimeout(() => floating.remove(), 1000);
   }
 
-  // Update cookie counter
+  // Update counters
   function updateCounter() {
     cookieCountEl.textContent = Math.floor(gameState.cookies);
+    cpsValueEl.textContent = gameState.cps;
   }
 
   // Auto cookie generation
@@ -116,11 +123,11 @@ permalink: /cookie-clicker-game/
     const saved = localStorage.getItem("cookieGame");
     if (saved) {
       gameState = JSON.parse(saved);
-      // Update buttons with correct costs
+      // Update shop buttons with costs + owned
       shopItems.forEach(item => {
         const upgrade = gameState.upgrades[item.id];
         if (upgrade) {
-          document.getElementById(item.id).textContent = `${item.name} (Cost: ${upgrade.cost})`;
+          document.getElementById(item.id).textContent = `${item.name} (Cost: ${upgrade.cost}) | Owned: ${upgrade.count}`;
         }
       });
       updateCounter();
