@@ -10,12 +10,12 @@ class GameLevelSummer {
     const path = gameEnv.path;
 
     // Background data
-    const image_src_summer = path + "/images/m&m/M&M_background.png";
+    const image_src_summer = path + "/images/mm/mm_background.png";
     const image_data_summer = {
       name: 'summer',
       greeting: "Welcome to the desert!  It is hot and dry here, but there are many adventures to be had!",
       src: image_src_summer,
-      pixels: { height: 1008, width: 1796 }
+      pixels: { height: 1535, width: 2730 }
     };
 
     // Player data
@@ -53,7 +53,7 @@ class GameLevelSummer {
       SCALE_FACTOR: RED_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 30,
-      INIT_POSITION: { x: 650, y: height - (height / RED_SCALE_FACTOR)-600 }, // NPC stands to the right
+      INIT_POSITION: { x: 900, y: height - (height / RED_SCALE_FACTOR)-400 }, // NPC stands to the right
       pixels: { height: 36, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },

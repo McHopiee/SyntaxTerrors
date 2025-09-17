@@ -24,6 +24,9 @@ hide: true
   <button class="btn-md btn-rounded btn-violet" onclick="window.location.href='/SyntaxTerrors/games/'">
       𝐆𝐚𝐦𝐞𝐬
   </button>
+  <button class="btn-md btn-rounded btn-orange" onclick="window.location.href='/SyntaxTerrors/gamify/adventureGame'">
+      𝐌&𝐌
+  </button>
 </div>
 
 <style>
@@ -64,6 +67,10 @@ hide: true
   background: linear-gradient(135deg, #433c6aff, #4e467bff); /* muted violet */
   box-shadow: 0 4px 10px rgba(67, 61, 101, 0.3);
 }
+.btn-orange {
+  background: linear-gradient(135deg, #6b3a1dff, #8c4e28ff); /* muted orange */
+  box-shadow: 0 4px 10px rgba(107, 58, 29, 0.3);
+}
 
 /* hover effects */
 .btn-skyblue:hover {
@@ -85,5 +92,9 @@ hide: true
 .btn-violet:hover {
   transform: scale(1.07);
   box-shadow: 0 6px 14px rgba(67, 61, 101, 0.45);
+}
+.btn-orange:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 14px rgba(107, 58, 29, 0.45);
 }
 </style>
