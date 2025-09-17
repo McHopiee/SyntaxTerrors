@@ -8,19 +8,19 @@ class GameLevelSummer {
     const height = gameEnv.innerHeight;
     const path = gameEnv.path;
 
-    // Background data
+    // Background
     const image_src_summer = path + "/images/mm/mm_background.png";
     const image_data_summer = {
       name: 'summer',
-      greeting: "Welcome to the desert!  It is hot and dry here, but there are many adventures to be had!",
+      greeting: "Welcome to the desert! It is hot and dry here, but there are many adventures to be had!",
       src: image_src_summer,
       pixels: { height: 1535, width: 2730 }
     };
 
-    // Player data
+    // Player
     const sprite_src_blank = path + "/images/mm/blankwalking.png";
     const BLANK_SCALE_FACTOR = 6;
-    const GROUND_Y = height - (height / BLANK_SCALE_FACTOR); // ground position
+    const GROUND_Y = height - (height / BLANK_SCALE_FACTOR);
     const sprite_data_blank = {
       id: 'Blank M&M',
       greeting: "I need to learn how to makes",
@@ -28,27 +28,23 @@ class GameLevelSummer {
       SCALE_FACTOR: BLANK_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 25,
-      INIT_POSITION: { x: 0, y: GROUND_Y },
+      INIT_POSITION: { x: 100, y: GROUND_Y },
       pixels: { height: 70, width: 216 },
       orientation: { rows: 2, columns: 6 },
       down: { row: 0, start: 0, columns: 6 },
-      downRight: { row: 0, start: 0, columns: 6, rotate: Math.PI / 16 },
-      downLeft: { row: 1, start: 0, columns: 6, rotate: -Math.PI / 16 },
       left: { row: 1, start: 0, columns: 6 },
       right: { row: 0, start: 0, columns: 6 },
       up: { row: 0, start: 0, columns: 6 },
-      upLeft: { row: 1, start: 0, columns: 6, rotate: Math.PI / 16 },
-      upRight: { row: 0, start: 0, columns: 6, rotate: -Math.PI / 16 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
-      keypress: { up: 87, left: 65, down: 83, right: 68, jump: 32 }, // W,A,S,D + Space
+      keypress: { up: 87, left: 65, down: 83, right: 68, jump: 32 }, // WASD + space
       physics: {
-        gravity: 1.2,        // pull down per frame
-        jumpStrength: 22,    // upward velocity when jumping
-        groundY: GROUND_Y    // floor height
+        gravity: 1.2,
+        jumpStrength: 22,
+        groundY: GROUND_Y
       }
     };
 
-    // NPC data
+    // NPC
     const sprite_src_red = path + "/images/mm/redanim.png";
     const RED_SCALE_FACTOR = 6;
     const sprite_data_red = {
@@ -58,7 +54,7 @@ class GameLevelSummer {
       SCALE_FACTOR: RED_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 30,
-      INIT_POSITION: { x: 900, y: height - (height / RED_SCALE_FACTOR) - 400 },
+      INIT_POSITION: { x: 600, y: height - (height / RED_SCALE_FACTOR) - 100 },
       pixels: { height: 36, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },
