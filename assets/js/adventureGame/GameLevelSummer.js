@@ -1,4 +1,3 @@
-
 import GameEnvBackground from './GameEngine/GameEnvBackground.js';
 import Player from './GameEngine/Player.js';
 import Npc from './GameEngine/Npc.js';
@@ -21,6 +20,7 @@ class GameLevelSummer {
     // Player data
     const sprite_src_blank = path + "/images/mm/blankwalking.png";
     const BLANK_SCALE_FACTOR = 6;
+    const GROUND_Y = height - (height / BLANK_SCALE_FACTOR); // ground position
     const sprite_data_blank = {
       id: 'Blank M&M',
       greeting: "I need to learn how to makes",
@@ -28,7 +28,7 @@ class GameLevelSummer {
       SCALE_FACTOR: BLANK_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 25,
-      INIT_POSITION: { x: 0, y: height - (height / BLANK_SCALE_FACTOR) },
+      INIT_POSITION: { x: 0, y: GROUND_Y },
       pixels: { height: 70, width: 216 },
       orientation: { rows: 2, columns: 6 },
       down: { row: 0, start: 0, columns: 6 },
@@ -40,11 +40,16 @@ class GameLevelSummer {
       upLeft: { row: 1, start: 0, columns: 6, rotate: Math.PI / 16 },
       upRight: { row: 0, start: 0, columns: 6, rotate: -Math.PI / 16 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
-      keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
+      keypress: { up: 87, left: 65, down: 83, right: 68, jump: 32 }, // W,A,S,D + Space
+      physics: {
+        gravity: 1.2,        // pull down per frame
+        jumpStrength: 22,    // upward velocity when jumping
+        groundY: GROUND_Y    // floor height
+      }
     };
 
-    // NPC data — can reuse blankwalking or a different sprite sheet
-    const sprite_src_red = path + "/images/mm/redanim.png"; // add an npc.png to your images
+    // NPC data
+    const sprite_src_red = path + "/images/mm/redanim.png";
     const RED_SCALE_FACTOR = 6;
     const sprite_data_red = {
       id: 'Red M&M',
@@ -53,7 +58,7 @@ class GameLevelSummer {
       SCALE_FACTOR: RED_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 30,
-      INIT_POSITION: { x: 900, y: height - (height / RED_SCALE_FACTOR)-400 }, // NPC stands to the right
+      INIT_POSITION: { x: 900, y: height - (height / RED_SCALE_FACTOR) - 400 },
       pixels: { height: 36, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },
