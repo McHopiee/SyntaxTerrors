@@ -10,7 +10,7 @@ class GameLevelSummer {
     const path = gameEnv.path;
 
     // Background data
-    const image_src_summer = path + "/images/mm/mm_background.png";
+    const image_src_summer = path + "images/mm/mm_background.png";
     const image_data_summer = {
       name: 'summer',
       greeting: "Welcome to the desert!  It is hot and dry here, but there are many adventures to be had!",
