@@ -5,43 +5,47 @@ permalink: /snake/
 ---
 
 <style>
-    body{}
-    .wrap{margin-left: auto; margin-right: auto;}
-    canvas{
+    body { font-family: sans-serif; }
+    .wrap { margin: auto; display: block; }
+    canvas {
         display: none;
-        border-style: solid;
-        border-width: 10px;
-        border-color: #FFFFFF;
+        border: 10px solid #FFFFFF;
     }
-    canvas:focus{outline: none;}
-    #gameover p, #setting p, #menu p{font-size: 20px;}
-    #gameover a, #setting a, #menu a{font-size: 30px; display: block;}
-    #gameover a:hover, #setting a:hover, #menu a:hover{cursor: pointer;}
-    #gameover a:hover::before, #setting a:hover::before, #menu a:hover::before{
-        content: ">"; margin-right: 10px;
+    canvas:focus { outline: none; }
+    #gameover p, #setting p, #menu p { font-size: 20px; }
+    #gameover a, #setting a, #menu a {
+        font-size: 30px;
+        display: block;
     }
-    #menu{display: block;}
-    #gameover{display: none;}
-    #setting{display: none;}
-    #setting input{display:none;}
-    #setting label{cursor: pointer;}
-    #setting input:checked + label{background-color: #FFF; color: #000;}
+    #gameover a:hover, #setting a:hover, #menu a:hover { cursor: pointer; }
+    #gameover a:hover::before, #setting a:hover::before, #menu a:hover::before {
+        content: ">";
+        margin-right: 10px;
+    }
+    #menu { display: block; }
+    #gameover { display: none; }
+    #setting { display: none; }
+    #setting input { display:none; }
+    #setting label { cursor: pointer; }
+    #setting input:checked + label {
+        background-color: #FFF;
+        color: #000;
+    }
 </style>
 
 <h2>Snake</h2>
 <div class="container">
-    <p class="fs-4">Score: <span id="score_value">0</span> | Lives: <span id="lives_value">0</span></p>
-
+    <p class="fs-4">Score: <span id="score_value">0</span></p>
     <div class="container bg-secondary" style="text-align:center;">
         <!-- Main Menu -->
         <div id="menu" class="py-4 text-light">
-            <p>Welcome to Snake, press <span style="background-color: #FFFFFF; color: #000000">space</span> to begin</p>
+            <p>Welcome to Snake, press <span style="background:#fff; color:#000">space</span> to begin</p>
             <a id="new_game" class="link-alert">new game</a>
             <a id="setting_menu" class="link-alert">settings</a>
         </div>
         <!-- Game Over -->
         <div id="gameover" class="py-4 text-light">
-            <p>Game Over, press <span style="background-color: #FFFFFF; color: #000000">space</span> to try again</p>
+            <p>Game Over, press <span style="background:#fff; color:#000">space</span> to try again</p>
             <a id="new_game1" class="link-alert">new game</a>
             <a id="setting_menu1" class="link-alert">settings</a>
         </div>
@@ -49,15 +53,15 @@ permalink: /snake/
         <canvas id="snake" class="wrap" width="320" height="320" tabindex="1"></canvas>
         <!-- Settings Screen -->
         <div id="setting" class="py-4 text-light">
-            <p>Settings Screen, press <span style="background-color: #FFFFFF; color: #000000">space</span> to go back to playing</p>
+            <p>Settings Screen, press <span style="background:#fff; color:#000">space</span> to go back</p>
             <a id="new_game2" class="link-alert">new game</a>
             <br>
             <p>Speed:
-                <input id="speed1" type="radio" name="speed" value="120" checked/>
+                <input id="speed1" type="radio" name="speed" value="150" checked/>
                 <label for="speed1">Slow</label>
-                <input id="speed2" type="radio" name="speed" value="75"/>
+                <input id="speed2" type="radio" name="speed" value="100"/>
                 <label for="speed2">Normal</label>
-                <input id="speed3" type="radio" name="speed" value="35"/>
+                <input id="speed3" type="radio" name="speed" value="60"/>
                 <label for="speed3">Fast</label>
             </p>
             <p>Wall:
@@ -72,239 +76,179 @@ permalink: /snake/
 
 <script>
 (function(){
+    const DIRECTION = { UP:0, RIGHT:1, DOWN:2, LEFT:3 };
+    const SCREEN = { MENU:-1, GAME:0, GAME_OVER:1, SETTING:2 };
+
+    class SnakeGame {
+        constructor(canvas, scoreElem) {
+            this.canvas = canvas;
+            this.ctx = canvas.getContext("2d");
+            this.scoreElem = scoreElem;
+            this.blockSize = 10;
+            this.reset();
+        }
+
+        reset() {
+            this.snake = [{x: 5, y: 15}];
+            this.snakeDir = DIRECTION.RIGHT;
+            this.snakeNextDir = DIRECTION.RIGHT;
+            this.score = 0;
+            this.updateScore();
+            this.addFood();
+            this.running = true;
+            this.paused = false;
+            this.lastTime = 0;
+        }
+
+        updateScore() {
+            this.scoreElem.textContent = this.score;
+        }
+
+        addFood() {
+            let valid = false;
+            while (!valid) {
+                this.food = {
+                    x: Math.floor(Math.random() * (this.canvas.width / this.blockSize)),
+                    y: Math.floor(Math.random() * (this.canvas.height / this.blockSize))
+                };
+                valid = !this.snake.some(p => p.x === this.food.x && p.y === this.food.y);
+            }
+        }
+
+        changeDir(keyCode) {
+            const opposites = {
+                [DIRECTION.UP]: DIRECTION.DOWN,
+                [DIRECTION.DOWN]: DIRECTION.UP,
+                [DIRECTION.LEFT]: DIRECTION.RIGHT,
+                [DIRECTION.RIGHT]: DIRECTION.LEFT
+            };
+            const keyMap = {
+                37: DIRECTION.LEFT,
+                38: DIRECTION.UP,
+                39: DIRECTION.RIGHT,
+                40: DIRECTION.DOWN
+            };
+            if (keyCode in keyMap) {
+                let newDir = keyMap[keyCode];
+                if (newDir !== opposites[this.snakeDir]) {
+                    this.snakeNextDir = newDir;
+                }
+            }
+            if (keyCode === 80) { // P = pause
+                this.paused = !this.paused;
+            }
+        }
+
+        move() {
+            let head = {...this.snake[0]};
+            this.snakeDir = this.snakeNextDir;
+            switch (this.snakeDir) {
+                case DIRECTION.UP: head.y--; break;
+                case DIRECTION.RIGHT: head.x++; break;
+                case DIRECTION.DOWN: head.y++; break;
+                case DIRECTION.LEFT: head.x--; break;
+            }
+            // Wall check
+            if (this.wall === 1) {
+                if (head.x < 0 || head.x >= this.canvas.width/this.blockSize ||
+                    head.y < 0 || head.y >= this.canvas.height/this.blockSize) {
+                    return false;
+                }
+            } else {
+                if (head.x < 0) head.x += this.canvas.width/this.blockSize;
+                if (head.x >= this.canvas.width/this.blockSize) head.x = 0;
+                if (head.y < 0) head.y += this.canvas.height/this.blockSize;
+                if (head.y >= this.canvas.height/this.blockSize) head.y = 0;
+            }
+            // Self collision
+            if (this.snake.some(p => p.x === head.x && p.y === head.y)) {
+                return false;
+            }
+            this.snake.unshift(head);
+            if (head.x === this.food.x && head.y === this.food.y) {
+                this.score++;
+                this.updateScore();
+                this.addFood();
+            } else {
+                this.snake.pop();
+            }
+            return true;
+        }
+
+        drawBlock(x,y,color="#fff") {
+            this.ctx.fillStyle = color;
+            this.ctx.fillRect(x*this.blockSize,y*this.blockSize,this.blockSize,this.blockSize);
+        }
+
+        render() {
+            this.ctx.fillStyle = "royalblue";
+            this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+            this.snake.forEach(p => this.drawBlock(p.x,p.y));
+            this.drawBlock(this.food.x,this.food.y,"#f00");
+        }
+
+        loop = (time) => {
+            if (!this.running) return;
+            if (this.paused) {
+                requestAnimationFrame(this.loop);
+                return;
+            }
+            if (time - this.lastTime > this.speed) {
+                if (!this.move()) {
+                    this.running = false;
+                    showScreen(SCREEN.GAME_OVER);
+                    return;
+                }
+                this.render();
+                this.lastTime = time;
+            }
+            requestAnimationFrame(this.loop);
+        }
+    }
+
+    // DOM Elements
     const canvas = document.getElementById("snake");
-    const ctx = canvas.getContext("2d");
-    const SCREEN_SNAKE = 0;
-    const screen_snake = document.getElementById("snake");
-    const ele_score = document.getElementById("score_value");
-    const ele_lives = document.getElementById("lives_value");
-    const speed_setting = document.getElementsByName("speed");
-    const wall_setting = document.getElementsByName("wall");
-    const SCREEN_MENU = -1, SCREEN_GAME_OVER=1, SCREEN_SETTING=2;
+    const eleScore = document.getElementById("score_value");
     const screen_menu = document.getElementById("menu");
     const screen_game_over = document.getElementById("gameover");
     const screen_setting = document.getElementById("setting");
-    const button_new_game = document.getElementById("new_game");
-    const button_new_game1 = document.getElementById("new_game1");
-    const button_new_game2 = document.getElementById("new_game2");
-    const button_setting_menu = document.getElementById("setting_menu");
-    const button_setting_menu1 = document.getElementById("setting_menu1");
 
-    const BLOCK = 10;
-    let SCREEN = SCREEN_MENU;
-    let snake, snake_dir, snake_next_dir, snake_speed, food = {x:0,y:0}, score, wall;
-    
-    // Extra life variables
-    let lives = 0;
-    let powerUp = null; // {x, y}
-    let powerUpTimeout = null;
-    let extraLifeGiven = false; // NEW: track milestone life
+    let game;
+    let currentScreen = SCREEN.MENU;
 
-    let showScreen = function(screen_opt){
-        SCREEN = screen_opt;
-        switch(screen_opt){
-            case SCREEN_SNAKE:
-                screen_snake.style.display = "block";
-                screen_menu.style.display = "none";
-                screen_setting.style.display = "none";
-                screen_game_over.style.display = "none";
-                break;
-            case SCREEN_GAME_OVER:
-                screen_snake.style.display = "block";
-                screen_menu.style.display = "none";
-                screen_setting.style.display = "none";
-                screen_game_over.style.display = "block";
-                break;
-            case SCREEN_SETTING:
-                screen_snake.style.display = "none";
-                screen_menu.style.display = "none";
-                screen_setting.style.display = "block";
-                screen_game_over.style.display = "none";
-                break;
-        }
+    function showScreen(screen) {
+        currentScreen = screen;
+        screen_menu.style.display = (screen===SCREEN.MENU)?"block":"none";
+        screen_game_over.style.display = (screen===SCREEN.GAME_OVER)?"block":"none";
+        screen_setting.style.display = (screen===SCREEN.SETTING)?"block":"none";
+        canvas.style.display = (screen===SCREEN.GAME || screen===SCREEN.GAME_OVER)?"block":"none";
     }
 
-    window.onload = function(){
-        button_new_game.onclick = button_new_game1.onclick = button_new_game2.onclick = newGame;
-        button_setting_menu.onclick = button_setting_menu1.onclick = function(){showScreen(SCREEN_SETTING);};
-        setSnakeSpeed(150);
-        setWall(1);
-
-        for(let i = 0; i < speed_setting.length; i++){
-            speed_setting[i].addEventListener("click", function(){
-                for(let j = 0; j < speed_setting.length; j++){
-                    if(speed_setting[j].checked) setSnakeSpeed(speed_setting[j].value);
-                }
-            });
-        }
-        for(let i = 0; i < wall_setting.length; i++){
-            wall_setting[i].addEventListener("click", function(){
-                for(let j = 0; j < wall_setting.length; j++){
-                    if(wall_setting[j].checked) setWall(wall_setting[j].value);
-                }
-            });
-        }
-        window.addEventListener("keydown", function(evt){
-            if(evt.code === "Space" && SCREEN !== SCREEN_SNAKE) newGame();
-        }, true);
+    function newGame() {
+        game = new SnakeGame(canvas,eleScore);
+        // settings
+        const speedSetting = document.querySelector("input[name='speed']:checked").value;
+        const wallSetting = document.querySelector("input[name='wall']:checked").value;
+        game.speed = parseInt(speedSetting);
+        game.wall = parseInt(wallSetting);
+        canvas.focus();
+        showScreen(SCREEN.GAME);
+        requestAnimationFrame(game.loop);
     }
 
-    let drawGrid = function() {
-        ctx.strokeStyle = "#555";
-        for (let x = 0; x <= canvas.width; x += BLOCK) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvas.height);
-            ctx.stroke();
+    // Event Listeners
+    document.getElementById("new_game").onclick = newGame;
+    document.getElementById("new_game1").onclick = newGame;
+    document.getElementById("new_game2").onclick = newGame;
+    document.getElementById("setting_menu").onclick = ()=>showScreen(SCREEN.SETTING);
+    document.getElementById("setting_menu1").onclick = ()=>showScreen(SCREEN.SETTING);
+
+    window.addEventListener("keydown",(e)=>{
+        if (e.code==="Space" && currentScreen!==SCREEN.GAME) {
+            newGame();
+        } else if (currentScreen===SCREEN.GAME) {
+            game.changeDir(e.keyCode);
         }
-        for (let y = 0; y <= canvas.height; y += BLOCK) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(canvas.width, y);
-            ctx.stroke();
-        }
-    }
-
-    let mainLoop = function(){
-        let _x = snake[0].x;
-        let _y = snake[0].y;
-        snake_dir = snake_next_dir;
-
-        switch(snake_dir){
-            case 0: _y--; break;
-            case 1: _x++; break;
-            case 2: _y++; break;
-            case 3: _x--; break;
-        }
-
-        snake.pop();
-        snake.unshift({x:_x, y:_y});
-
-        // Wall collision with extra life check
-        if(wall === 1){
-            if(snake[0].x < 0 || snake[0].x === canvas.width / BLOCK || snake[0].y < 0 || snake[0].y === canvas.height / BLOCK){
-                if(lives > 0){
-                    lives--;
-                    altLives(lives);
-                    if(snake[0].x < 0) snake[0].x = canvas.width / BLOCK - 1;
-                    if(snake[0].x === canvas.width / BLOCK) snake[0].x = 0;
-                    if(snake[0].y < 0) snake[0].y = canvas.height / BLOCK - 1;
-                    if(snake[0].y === canvas.height / BLOCK) snake[0].y = 0;
-                }else{
-                    showScreen(SCREEN_GAME_OVER);
-                    return;
-                }
-            }
-        }
-
-        // Snake vs Snake collision
-        for(let i = 1; i < snake.length; i++){
-            if(snake[0].x === snake[i].x && snake[0].y === snake[i].y){
-                showScreen(SCREEN_GAME_OVER);
-                return;
-            }
-        }
-
-        // Snake eats food
-        if(checkBlock(snake[0].x, snake[0].y, food.x, food.y)){
-            snake[snake.length] = {x:snake[0].x, y:snake[0].y};
-            altScore(++score);
-            addFood();
-        }
-
-        // ✅ Score milestone extra life only once
-        if(score >= 10 && !extraLifeGiven){
-            lives++;
-            altLives(lives);
-            extraLifeGiven = true;
-        }
-
-        // Snake eats power-up
-        if(powerUp && checkBlock(snake[0].x, snake[0].y, powerUp.x, powerUp.y)){
-            lives++;
-            altLives(lives);
-            powerUp = null;
-            if(powerUpTimeout) clearTimeout(powerUpTimeout);
-        }
-
-        // Draw canvas
-        ctx.fillStyle = "royalblue";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        drawGrid();
-
-        // Draw snake
-        for(let i=0;i<snake.length;i++) activeDot(snake[i].x, snake[i].y);
-
-        // Draw food
-        activeDot(food.x, food.y);
-
-        // Draw power-up
-        if(powerUp){
-            ctx.fillStyle = "yellow";
-            ctx.fillRect(powerUp.x * BLOCK, powerUp.y * BLOCK, BLOCK, BLOCK);
-        }
-
-        setTimeout(mainLoop, snake_speed);
-    }
-
-    let newGame = function(){
-        showScreen(SCREEN_SNAKE);
-        screen_snake.focus();
-        score = 0;
-        lives = 0;
-        extraLifeGiven = false; // reset for new game
-        altScore(score);
-        altLives(lives);
-        snake = [{x:0, y:15}];
-        snake_next_dir = 1;
-        addFood();
-        spawnPowerUp();
-        canvas.onkeydown = function(evt){
-            if([37,38,39,40].includes(evt.keyCode)) evt.preventDefault();
-            changeDir(evt.keyCode);
-        }
-        mainLoop();
-    }
-
-    let changeDir = function(key){
-        switch(key){
-            case 37: if(snake_dir !== 1) snake_next_dir = 3; break;
-            case 38: if(snake_dir !== 2) snake_next_dir = 0; break;
-            case 39: if(snake_dir !== 3) snake_next_dir = 1; break;
-            case 40: if(snake_dir !== 0) snake_next_dir = 2; break;
-        }
-    }
-
-    let activeDot = function(x,y){
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(x*BLOCK, y*BLOCK, BLOCK, BLOCK);
-    }
-
-    let addFood = function(){
-        food.x = Math.floor(Math.random()*((canvas.width/BLOCK)-1));
-        food.y = Math.floor(Math.random()*((canvas.height/BLOCK)-1));
-        for(let i=0;i<snake.length;i++){
-            if(checkBlock(food.x, food.y, snake[i].x, snake[i].y)) addFood();
-        }
-    }
-
-    let checkBlock = function(x,y,_x,_y){return x===_x && y===_y;}
-    let altScore = function(score_val){ele_score.innerHTML = String(score_val);}
-    let altLives = function(life_val){ele_lives.innerHTML = String(life_val);}
-    let setSnakeSpeed = function(speed_value){snake_speed = speed_value;}
-    let setWall = function(wall_value){
-        wall = wall_value;
-        screen_snake.style.borderColor = (wall===0)?"#606060":"#FFFFFF";
-    }
-
-    // Spawn yellow power-up for 5 seconds
-    let spawnPowerUp = function(){
-        powerUp = {
-            x: Math.floor(Math.random()*((canvas.width/BLOCK)-1)),
-            y: Math.floor(Math.random()*((canvas.height/BLOCK)-1))
-        };
-        powerUpTimeout = setTimeout(()=>{ powerUp = null; }, 5000);
-    }
-
+    });
 })();
 </script>
