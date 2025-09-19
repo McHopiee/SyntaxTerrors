@@ -48,7 +48,7 @@ class GameLevelSummer {
     const RED_SCALE_FACTOR = 6;
     const sprite_data_red = {
       id: 'Red M&M',
-      greeting: "Open up your VSCode using code . in terminal!",
+      greeting: "Open up your VSCode by running the command code . in terminal!",
       src: sprite_src_red,
       SCALE_FACTOR: RED_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -67,7 +67,9 @@ class GameLevelSummer {
     const ORANGE_SCALE_FACTOR = 6;
     const sprite_data_orange = {
       id: 'Orange M&M',
-      greeting: "Activate your virtual environment.",
+      greeting: `Activate your virtual environment by running the following commands in your terminal:\n (1) ./scripts/activate.sh\n (2) python3 -m venv venv\n (3) source venv/bin/activate`,
+
+
       src: sprite_src_orange,
       SCALE_FACTOR: ORANGE_SCALE_FACTOR,
       STEP_FACTOR: 1000,
