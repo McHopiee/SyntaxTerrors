@@ -94,7 +94,7 @@ class GameLevelSummer {
     const PINK_SCALE_FACTOR = 6;
     const sprite_data_pink = {
       id: 'Pink M&M',
-      greeting: "Answer my quiz to continue!",
+      greeting: "Answer my quiz to continue! Press E to take the quiz.",
       src: sprite_src_pink,
       SCALE_FACTOR: PINK_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -153,33 +153,46 @@ class GameLevelSummer {
   }
 
   triggerQuiz() {
-    this.showQuestion(0, (correct) => {
-      if (correct) {
-        alert("Correct! 🎉");
-      } else {
-        alert("Oops, try again!");
-      }
-    });
-  }
+  let currentIndex = 0;
+
+  const nextQuestion = () => {
+    if (currentIndex < this.quizQuestions.length) {
+      this.showQuestion(currentIndex, (correct) => {
+        if (correct) {
+          alert("Correct! 🎉");
+          currentIndex++;
+          nextQuestion(); // next
+        } else {
+          alert("Oops, try again!");
+          nextQuestion(); // retry same
+        }
+      });
+    } else {
+      alert("🎉 Quiz complete!");
+      this.quizContainer.style.display = "none"; // hide when done
+    }
+  };
+
+  nextQuestion(); // start
+}
+
 
   showQuestion(index, callback) {
-    const q = this.quizQuestions[index];
-    this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
+  const q = this.quizQuestions[index];
+  this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
 
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement("button");
-      btn.textContent = opt;
-      btn.style.display = "block";
-      btn.style.margin = "10px 0";
-      btn.onclick = () => {
-        callback(i === q.answer); // pass true if correct
-        this.quizContainer.style.display = "none";
-      };
-      this.quizContainer.appendChild(btn);
-    });
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.style.display = "block";
+    btn.style.margin = "10px 0";
+    btn.onclick = () => {
+      callback(i === q.answer); // pass true if correct
+    };
+    this.quizContainer.appendChild(btn);
+  });
 
-    this.quizContainer.style.display = "block";
-  
+  this.quizContainer.style.display = "block";
   }
 }
 
