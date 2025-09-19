@@ -120,7 +120,7 @@ const sprite_data_redyellow = {
       { class: Npc, data: sprite_data_red },
       { class: Npc, data: sprite_data_orange }
     ];
-     const sprite_src_pink = path + "/images/mm/redanim.png"; 
+    const sprite_src_pink = path + "/images/mm/redanim.png"; 
     const PINK_SCALE_FACTOR = 6;
     const sprite_data_pink = {
       id: 'Pink M&M',
@@ -129,7 +129,7 @@ const sprite_data_redyellow = {
       SCALE_FACTOR: PINK_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 30,
-      INIT_POSITION: { x: 1000, y: height - (height / PINK_SCALE_FACTOR)-200 }, 
+      INIT_POSITION: { x: 1300, y: height - (height / PINK_SCALE_FACTOR)-50 }, 
       pixels: { height: 35, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },
