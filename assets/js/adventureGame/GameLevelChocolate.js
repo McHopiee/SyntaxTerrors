@@ -1,4 +1,3 @@
-
 import GameEnvBackground from './GameEngine/GameEnvBackground.js';
 import Player from './GameEngine/Player.js';
 import Npc from './GameEngine/Npc.js';
@@ -57,7 +56,7 @@ class GameLevelChocolate {
       pixels: { height: 35, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },
-      left: { row: 1, start: 0, columns: 5 },
+      left: { row: 0, start: 0, columns: 5 }, // fixed row index
       right: { row: 0, start: 0, columns: 5 },
       up: { row: 0, start: 0, columns: 5 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
@@ -76,7 +75,7 @@ class GameLevelChocolate {
       pixels: { height: 36, width: 108 },
       orientation: { rows: 1, columns: 3 },
       down: { row: 0, start: 0, columns: 3 },
-      left: { row: 1, start: 0, columns: 3 },
+      left: { row: 0, start: 0, columns: 3 }, // fixed row index
       right: { row: 0, start: 0, columns: 3 },
       up: { row: 0, start: 0, columns: 3 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
@@ -95,12 +94,13 @@ class GameLevelChocolate {
       pixels: { height: 36, width: 144 },
       orientation: { rows: 1, columns: 4 },
       down: { row: 0, start: 0, columns: 4 },
-      left: { row: 1, start: 0, columns: 4 },
+      left: { row: 0, start: 0, columns: 4 }, // fixed row index
       right: { row: 0, start: 0, columns: 4 },
       up: { row: 0, start: 0, columns: 4 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
       interact: () => {
-        this.triggerQuiz();
+        this.showImagePopup(path + "/images/mm/rainbowmm.png"); // show image
+        this.triggerQuiz(); // then run quiz
       }
     };
 
@@ -145,49 +145,84 @@ class GameLevelChocolate {
   }
 
   triggerQuiz() {
-  let currentIndex = 0;
+    let currentIndex = 0;
 
-  const nextQuestion = () => {
-    if (currentIndex < this.quizQuestions.length) {
-      this.showQuestion(currentIndex, (correct) => {
-        if (correct) {
-          alert("Correct! 🎉");
-          currentIndex++;
-          nextQuestion(); // next
-        } else {
-          alert("Oops, try again!");
-          nextQuestion(); // retry same
-        }
-      });
-    } else {
-      alert("🎉 Quiz complete!");
-      this.quizContainer.style.display = "none"; // hide when done
-    }
-  };
-
-  nextQuestion(); // start
-}
-
-
-  showQuestion(index, callback) {
-  const q = this.quizQuestions[index];
-  this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
-
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.style.display = "block";
-    btn.style.margin = "10px 0";
-    btn.onclick = () => {
-      callback(i === q.answer); // pass true if correct
+    const nextQuestion = () => {
+      if (currentIndex < this.quizQuestions.length) {
+        this.showQuestion(currentIndex, (correct) => {
+          if (correct) {
+            alert("Correct! 🎉");
+            currentIndex++;
+            nextQuestion(); // next
+          } else {
+            alert("Oops, try again!");
+          }
+        });
+      } else {
+        alert("🎉 Quiz complete!");
+        this.quizContainer.style.display = "none"; // hide when done
+      }
     };
-    this.quizContainer.appendChild(btn);
-  });
 
-  this.quizContainer.style.display = "block";
-  };
-
+    nextQuestion(); // start
   }
 
+  showQuestion(index, callback) {
+    const q = this.quizQuestions[index];
+    this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
+
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.display = "block";
+      btn.style.margin = "10px 0";
+      btn.onclick = () => {
+        callback(i === q.answer);
+      };
+      this.quizContainer.appendChild(btn);
+    });
+
+    this.quizContainer.style.display = "block";
+  }
+
+  showImagePopup(src) {
+    // Remove old popup if it exists
+    if (this.imagePopup) {
+      document.body.removeChild(this.imagePopup);
+    }
+
+    // Create container
+    this.imagePopup = document.createElement("div");
+    this.imagePopup.style.position = "absolute";
+    this.imagePopup.style.top = "50%";
+    this.imagePopup.style.left = "50%";
+    this.imagePopup.style.transform = "translate(-50%, -50%)";
+    this.imagePopup.style.background = "white";
+    this.imagePopup.style.padding = "10px";
+    this.imagePopup.style.border = "3px solid black";
+    this.imagePopup.style.zIndex = "10000";
+
+    // Create image
+    const img = document.createElement("img");
+    img.src = src;
+    img.style.maxWidth = "400px";
+    img.style.maxHeight = "300px";
+    this.imagePopup.appendChild(img);
+
+    // Close button
+    const btn = document.createElement("button");
+    btn.textContent = "Close";
+    btn.style.display = "block";
+    btn.style.margin = "10px auto 0";
+    btn.onclick = () => {
+      document.body.removeChild(this.imagePopup);
+      this.imagePopup = null;
+    };
+    this.imagePopup.appendChild(btn);
+
+    // Add to DOM
+    document.body.appendChild(this.imagePopup);
+  }
+}
 
 export default GameLevelChocolate;
