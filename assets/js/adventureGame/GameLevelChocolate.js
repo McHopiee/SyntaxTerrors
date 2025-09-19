@@ -23,7 +23,7 @@ class GameLevelChocolate {
     const BLANK_SCALE_FACTOR = 6;
     const sprite_data_blank = {
       id: 'Blank M&M',
-      greeting: "I need to learn how to makes",
+      greeting: "I need to learn how to use make to dynamically change my themes!",
       src: sprite_src_blank,
       SCALE_FACTOR: BLANK_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -48,7 +48,7 @@ class GameLevelChocolate {
     const YELLOW_SCALE_FACTOR = 6;
     const sprite_data_yellow = {
       id: 'Yellow M&M',
-      greeting: "Go look at the make file!",
+      greeting: "Go look at the make file! (https://github.com/Open-Coding-Society/pages/blob/main/Makefile). You should see sections for each theme such as use-cayman",
       src: sprite_src_yellow,
       SCALE_FACTOR: YELLOW_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -67,7 +67,7 @@ class GameLevelChocolate {
     const GREEN_SCALE_FACTOR = 6;
     const sprite_data_green = {
       id: 'Green M&M',
-      greeting: "Pick your favorite theme, and run the make command!",
+      greeting: "Pick your favorite theme.  The Makefile includes targets to copy the appropriate config, Gemfile, and layouts from _themes/<theme>/ Here are the specific targets you can make: (1) make use-minima (2) make use-text (3) make use-cayman (4) make use-so-simpleand run the make command!",
       src: sprite_src_green,
       SCALE_FACTOR: GREEN_SCALE_FACTOR,
       STEP_FACTOR: 1000,
