@@ -13,9 +13,10 @@ permalink: /gamify/adventureGame
     // Adnventure Game assets locations
     import Game from "{{site.baseurl}}/assets/js/adventureGame/Game.js";
     import GameLevelSummer from "{{site.baseurl}}/assets/js/adventureGame/GameLevelSummer.js";
+    import GameLevelChocolate from "{{site.baseurl}}/assets/js/adventureGame/GameLevelChocolate.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    const gameLevelClasses = [GameLevelSummer];
+    const gameLevelClasses = [GameLevelSummer, GameLevelChocolate];
 
     const instructionsStyle = `
         position: fixed;
