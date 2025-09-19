@@ -86,7 +86,7 @@ class GameLevelChocolate {
     const BLUE_SCALE_FACTOR = 6;
     const sprite_data_blue = {
       id: 'Blue M&M',
-      greeting: "Now show me what you have learned.",
+      greeting: "Now show me what you have learned. Press E to start the quiz.",
       src: sprite_src_blue,
       SCALE_FACTOR: BLUE_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -98,9 +98,43 @@ class GameLevelChocolate {
       left: { row: 1, start: 0, columns: 4 },
       right: { row: 0, start: 0, columns: 4 },
       up: { row: 0, start: 0, columns: 4 },
-      hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
+      hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
+      interact: () => {
+        this.triggerQuiz();
+      }
     };
 
+    // ===== QUIZ SETUP (inline, no extra file) =====
+    this.quizQuestions = [
+      {
+        question: "Which of the following is a valid command from the Makefile?",
+        options: ["make use-minima", "make install-theme", "make setup-layouts"],
+        answer: 0
+      },
+      {
+        question: "According to the Makefile, which command would you use to switch to the 'text' theme?",
+        options: [
+          "make theme-text",
+          "make text-install",
+          "make use-text"
+        ],
+        answer: 2
+      }
+    ];
+
+    this.quizContainer = document.createElement("div");
+    this.quizContainer.style.position = "absolute";
+    this.quizContainer.style.top = "50%";
+    this.quizContainer.style.left = "50%";
+    this.quizContainer.style.transform = "translate(-50%, -50%)";
+    this.quizContainer.style.background = "white";
+    this.quizContainer.style.padding = "20px";
+    this.quizContainer.style.border = "3px solid black";
+    this.quizContainer.style.zIndex = "9999";
+    this.quizContainer.style.display = "none"; // hidden initially
+    document.body.appendChild(this.quizContainer);
+
+    // Classes used in the game
     this.classes = [
       { class: GameEnvBackground, data: image_data_summer },
       { class: Player, data: sprite_data_blank },
@@ -109,6 +143,51 @@ class GameLevelChocolate {
       { class: Npc, data: sprite_data_blue }
     ];
   }
+
+  triggerQuiz() {
+  let currentIndex = 0;
+
+  const nextQuestion = () => {
+    if (currentIndex < this.quizQuestions.length) {
+      this.showQuestion(currentIndex, (correct) => {
+        if (correct) {
+          alert("Correct! 🎉");
+          currentIndex++;
+          nextQuestion(); // next
+        } else {
+          alert("Oops, try again!");
+          nextQuestion(); // retry same
+        }
+      });
+    } else {
+      alert("🎉 Quiz complete!");
+      this.quizContainer.style.display = "none"; // hide when done
+    }
+  };
+
+  nextQuestion(); // start
 }
+
+
+  showQuestion(index, callback) {
+  const q = this.quizQuestions[index];
+  this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.style.display = "block";
+    btn.style.margin = "10px 0";
+    btn.onclick = () => {
+      callback(i === q.answer); // pass true if correct
+    };
+    this.quizContainer.appendChild(btn);
+  });
+
+  this.quizContainer.style.display = "block";
+  };
+
+  }
+
 
 export default GameLevelChocolate;
