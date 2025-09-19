@@ -88,6 +88,96 @@ class GameLevelSummer {
       { class: Npc, data: sprite_data_red },
       { class: Npc, data: sprite_data_orange }
     ];
+     const sprite_src_pink = path + "/images/mm/redanim.png"; 
+    const PINK_SCALE_FACTOR = 6;
+    const sprite_data_pink = {
+      id: 'Pink M&M',
+      greeting: "Answer my quiz to continue!",
+      src: sprite_src_pink,
+      SCALE_FACTOR: PINK_SCALE_FACTOR,
+      STEP_FACTOR: 1000,
+      ANIMATION_RATE: 30,
+      INIT_POSITION: { x: 1000, y: height - (height / PINK_SCALE_FACTOR)-200 }, 
+      pixels: { height: 35, width: 180 },
+      orientation: { rows: 1, columns: 5 },
+      down: { row: 0, start: 0, columns: 5 },
+      left: { row: 1, start: 0, columns: 5 },
+      right: { row: 0, start: 0, columns: 5 },
+      up: { row: 0, start: 0, columns: 5 },
+      hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
+      interact: () => {
+        this.triggerQuiz();
+      }
+    };
+
+    // ===== QUIZ SETUP (inline, no extra file) =====
+    this.quizQuestions = [
+      {
+        question: "What command opens VSCode from terminal?",
+        options: ["open .", "code .", "vscode start"],
+        answer: 1
+      },
+      {
+        question: "How do you activate a virtual environment?",
+        options: [
+          "python -m venv activate",
+          "source venv/bin/activate",
+          "pip install activate"
+        ],
+        answer: 1
+      }
+    ];
+
+    this.quizContainer = document.createElement("div");
+    this.quizContainer.style.position = "absolute";
+    this.quizContainer.style.top = "50%";
+    this.quizContainer.style.left = "50%";
+    this.quizContainer.style.transform = "translate(-50%, -50%)";
+    this.quizContainer.style.background = "white";
+    this.quizContainer.style.padding = "20px";
+    this.quizContainer.style.border = "3px solid black";
+    this.quizContainer.style.zIndex = "9999";
+    this.quizContainer.style.display = "none"; // hidden initially
+    document.body.appendChild(this.quizContainer);
+
+    // Classes used in the game
+    this.classes = [
+      { class: GameEnvBackground, data: image_data_summer },
+      { class: Player, data: sprite_data_blank },
+      { class: Npc, data: sprite_data_red },
+      { class: Npc, data: sprite_data_orange },
+      { class: Npc, data: sprite_data_pink, onInteract: () => this.triggerQuiz() }
+    ];
+  }
+
+  triggerQuiz() {
+    this.showQuestion(0, (correct) => {
+      if (correct) {
+        alert("Correct! 🎉");
+      } else {
+        alert("Oops, try again!");
+      }
+    });
+  }
+
+  showQuestion(index, callback) {
+    const q = this.quizQuestions[index];
+    this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
+
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.display = "block";
+      btn.style.margin = "10px 0";
+      btn.onclick = () => {
+        callback(i === q.answer); // pass true if correct
+        this.quizContainer.style.display = "none";
+      };
+      this.quizContainer.appendChild(btn);
+    });
+
+    this.quizContainer.style.display = "block";
+  
   }
 }
 
