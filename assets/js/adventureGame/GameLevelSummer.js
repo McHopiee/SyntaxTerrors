@@ -10,7 +10,7 @@ class GameLevelSummer {
     const path = gameEnv.path;
 
     // background
-    const image_src_summer = path + "/images/mm/mm_background.png";
+    const image_src_summer = path + "/images/mm/mm_background_mountains.png";
     const image_data_summer = {
       name: 'summer',
       greeting: "Welcome to the desert!  It is hot and dry here, but there are many adventures to be had!",
@@ -62,6 +62,36 @@ class GameLevelSummer {
       up: { row: 0, start: 0, columns: 5 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
     };
+// NPCs
+const sprite_src_redyellow = path + "/images/mm/Redyellowmm.png"; 
+const REDYELLOW_SCALE_FACTOR = 6;
+
+const sprite_data_redyellow = {
+  id: 'Half Red & Yellow M&M',
+  greeting: "Open up your VSCode by running the command code . in terminal!",
+  src: sprite_src_redyellow,
+  SCALE_FACTOR: REDYELLOW_SCALE_FACTOR,
+  STEP_FACTOR: 1000,
+  ANIMATION_RATE: 30,
+
+  INIT_POSITION: { 
+    x: 500, 
+    y: height - (height / REDYELLOW_SCALE_FACTOR) - 100 
+  }, 
+
+  // Frame size (41×40 each), sheet is 4 rows × 5 columns
+  pixels: { height: 197, width: 41 },
+  orientation: { rows: 4, columns: 5 },
+
+  // Animation mappings (adjust rows if different order in sheet)
+  down:  { row: 0, start: 0, columns: 5 },
+  left:  { row: 1, start: 0, columns: 5 },
+  right: { row: 2, start: 0, columns: 5 },
+  up:    { row: 3, start: 0, columns: 5 },
+
+  // Hitbox (tweak as needed for collisions)
+  hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
+};
 
     const sprite_src_orange = path + "/images/mm/orangeanim.png"; 
     const ORANGE_SCALE_FACTOR = 6;
