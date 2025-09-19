@@ -1,10 +1,13 @@
-
 import GameEnvBackground from './GameEngine/GameEnvBackground.js';
 import Player from './GameEngine/Player.js';
 import Npc from './GameEngine/Npc.js';
 
+// ⬅️ adjust this import to match your actual next level
+import GameLevelChocolate from './GameLevelChocolate.js';
+
 class GameLevelSummer {
   constructor(gameEnv) {
+    this.gameEnv = gameEnv; // keep reference for later
     const width = gameEnv.innerWidth;
     const height = gameEnv.innerHeight;
     const path = gameEnv.path;
@@ -43,7 +46,7 @@ class GameLevelSummer {
       keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
 
-    //npcs
+    // npcs
     const sprite_src_red = path + "/images/mm/redanim.png"; 
     const RED_SCALE_FACTOR = 6;
     const sprite_data_red = {
@@ -62,44 +65,12 @@ class GameLevelSummer {
       up: { row: 0, start: 0, columns: 5 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
     };
-// NPCs
-const sprite_src_redyellow = path + "/images/mm/Redyellowmm.png"; 
-const REDYELLOW_SCALE_FACTOR = 6;
-
-const sprite_data_redyellow = {
-  id: 'Half Red & Yellow M&M',
-  greeting: "Open up your VSCode by running the command code . in terminal!",
-  src: sprite_src_redyellow,
-  SCALE_FACTOR: REDYELLOW_SCALE_FACTOR,
-  STEP_FACTOR: 1000,
-  ANIMATION_RATE: 30,
-
-  INIT_POSITION: { 
-    x: 500, 
-    y: height - (height / REDYELLOW_SCALE_FACTOR) - 100 
-  }, 
-
-  // Frame size (41×40 each), sheet is 4 rows × 5 columns
-  pixels: { height: 197, width: 41 },
-  orientation: { rows: 4, columns: 5 },
-
-  // Animation mappings (adjust rows if different order in sheet)
-  down:  { row: 0, start: 0, columns: 5 },
-  left:  { row: 1, start: 0, columns: 5 },
-  right: { row: 2, start: 0, columns: 5 },
-  up:    { row: 3, start: 0, columns: 5 },
-
-  // Hitbox (tweak as needed for collisions)
-  hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
-};
 
     const sprite_src_orange = path + "/images/mm/orangeanim.png"; 
     const ORANGE_SCALE_FACTOR = 6;
     const sprite_data_orange = {
       id: 'Orange M&M',
       greeting: `Activate your virtual environment by running the following commands in your terminal:\n (1) ./scripts/activate.sh\n (2) python3 -m venv venv\n (3) source venv/bin/activate`,
-
-
       src: sprite_src_orange,
       SCALE_FACTOR: ORANGE_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -114,35 +85,29 @@ const sprite_data_redyellow = {
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
     };
 
-    this.classes = [
-      { class: GameEnvBackground, data: image_data_summer },
-      { class: Player, data: sprite_data_blank },
-      { class: Npc, data: sprite_data_red },
-      { class: Npc, data: sprite_data_orange }
-    ];
-    const sprite_src_pink = path + "/images/mm/redanim.png"; 
-    const PINK_SCALE_FACTOR = 6;
-    const sprite_data_pink = {
-      id: 'Pink M&M',
+    const sprite_src_portal = path + "/images/mm/greenportal.png"; 
+    const PORTAL_SCALE_FACTOR = 6;
+    const sprite_data_portal = {
+      id: 'Mysterious Portal',
       greeting: "Answer my quiz to continue! Press E to take the quiz.",
-      src: sprite_src_pink,
-      SCALE_FACTOR: PINK_SCALE_FACTOR,
+      src: sprite_src_portal,
+      SCALE_FACTOR: PORTAL_SCALE_FACTOR,
       STEP_FACTOR: 1000,
       ANIMATION_RATE: 30,
-      INIT_POSITION: { x: 1300, y: height - (height / PINK_SCALE_FACTOR)-50 }, 
-      pixels: { height: 35, width: 180 },
-      orientation: { rows: 1, columns: 5 },
-      down: { row: 0, start: 0, columns: 5 },
-      left: { row: 1, start: 0, columns: 5 },
-      right: { row: 0, start: 0, columns: 5 },
-      up: { row: 0, start: 0, columns: 5 },
+      INIT_POSITION: { x: 1300, y: height - (height / PORTAL_SCALE_FACTOR)-50 }, 
+      pixels: { height: 200, width: 252 },
+      orientation: { rows: 1, columns: 1 },
+      down: { row: 0, start: 0, columns: 1 },
+      left: { row: 0, start: 0, columns: 1 },
+      right: { row: 0, start: 0, columns: 1 },
+      up: { row: 0, start: 0, columns: 1 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
       interact: () => {
         this.triggerQuiz();
       }
     };
 
-    // ===== QUIZ SETUP (inline, no extra file) =====
+    // ===== QUIZ SETUP =====
     this.quizQuestions = [
       {
         question: "What command opens VSCode from terminal?",
@@ -169,7 +134,7 @@ const sprite_data_redyellow = {
     this.quizContainer.style.padding = "20px";
     this.quizContainer.style.border = "3px solid black";
     this.quizContainer.style.zIndex = "9999";
-    this.quizContainer.style.display = "none"; // hidden initially
+    this.quizContainer.style.display = "none"; 
     document.body.appendChild(this.quizContainer);
 
     // Classes used in the game
@@ -178,51 +143,63 @@ const sprite_data_redyellow = {
       { class: Player, data: sprite_data_blank },
       { class: Npc, data: sprite_data_red },
       { class: Npc, data: sprite_data_orange },
-      { class: Npc, data: sprite_data_pink, onInteract: () => this.triggerQuiz() }
+      { class: Npc, data: sprite_data_portal, onInteract: () => this.triggerQuiz() }
     ];
   }
 
+  loadLevel(levelClass) {
+    this.currentLevel = new levelClass(this); // Create a new instance of the level
+    this.currentLevel.init(); // Initialize the new level (if applicable)
+  }
+
   triggerQuiz() {
-  let currentIndex = 0;
+    let currentIndex = 0;
 
-  const nextQuestion = () => {
-    if (currentIndex < this.quizQuestions.length) {
-      this.showQuestion(currentIndex, (correct) => {
-        if (correct) {
-          alert("Correct! 🎉");
-          currentIndex++;
-          nextQuestion(); // next
+    const nextQuestion = () => {
+      if (currentIndex < this.quizQuestions.length) {
+        this.showQuestion(currentIndex, (correct) => {
+          if (correct) {
+            alert("Correct! 🎉");
+            currentIndex++;
+            nextQuestion();
+          } else {
+            alert("Oops, try again!");
+            nextQuestion();
+          }
+        });
+      } else {
+        alert("🎉 Quiz complete!");
+        this.quizContainer.style.display = "none";
+
+        // 🚪 Transport player to GameLevelChocolate
+        if (this.gameEnv && typeof this.gameEnv.loadLevel === "function") {
+          console.log("Loading GameLevelChocolate...");
+          this.gameEnv.loadLevel(GameLevelChocolate);
         } else {
-          alert("Oops, try again!");
-          nextQuestion(); // retry same
+          console.error("gameEnv.loadLevel is not a function or gameEnv is undefined.");
         }
-      });
-    } else {
-      alert("🎉 Quiz complete!");
-      this.quizContainer.style.display = "none"; // hide when done
-    }
-  };
+      }
+    };
 
-  nextQuestion(); // start
-}
-
+    nextQuestion();
+  }
 
   showQuestion(index, callback) {
-  const q = this.quizQuestions[index];
-  this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
+    const q = this.quizQuestions[index];
+    this.quizContainer.innerHTML = `<h3>${q.question}</h3>`;
 
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.style.display = "block";
-    btn.style.margin = "10px 0";
-    btn.onclick = () => {
-      callback(i === q.answer); // pass true if correct
-    };
-    this.quizContainer.appendChild(btn);
-  });
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.display = "block";
+      btn.style.margin = "10px 0";
+      btn.onclick = () => {
+        callback(i === q.answer);
+      };
+      this.quizContainer.appendChild(btn);
+    });
 
-  this.quizContainer.style.display = "block";
+    this.quizContainer.style.display = "block";
   }
 }
 
