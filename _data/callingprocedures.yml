@@ -1,137 +1,123 @@
 Title: "Calling Procedures"
-Description: "Learn how to call procedures (functions) in Python and JavaScript. Procedures are reusable blocks of code that perform specific tasks."
+Description: "A procedure is a group of programming instructions, also known as a function or method. Procedures let you reuse code and organize your program. Learn how to define, call, and use procedures in Python and JavaScript."
 Topics:
-  - title: "Defining and Calling Procedures"
+  - title: "What is a Procedure?"
     keyPoints:
-      - "Procedures are reusable blocks of code"
-      - "Use <span class='bg-neutral-700 px-1 rounded text-blue-200'>def</span> in Python to define a procedure"
-      - "Use <span class='bg-neutral-700 px-1 rounded text-green-200'>function</span> or arrow functions in JavaScript"
+      - "A procedure is a reusable group of instructions"
+      - "Also called functions or methods"
+      - "Lets you avoid rewriting the same code"
     jsCode: |
-      function greet(name) {
-          console.log(`Hello, ${name}!`);
+      // A procedure (function) to display a message
+      function showMessage() {
+          console.log("Welcome to the program!");
+      }
+    jsExplanation: |
+      In JavaScript, a procedure is called a <span class='text-red-500'>function</span>.<br>
+      <ul>
+        <li>Use the <span class='bg-neutral-700 px-1 rounded text-red-500'>function</span> keyword to define a procedure.</li>
+        <li>Write your instructions inside curly braces <span class='bg-neutral-700 px-1 rounded text-red-500'>{}</span>.</li>
+      </ul>
+      This function displays a welcome message.
+    pyCode: |
+      # A procedure (function) to display a message
+      def show_message():
+          print("Welcome to the program!")
+    pyExplanation: |
+      In Python, a procedure is called a <span class='text-blue-500'>function</span>.<br>
+      <ul>
+        <li>Use the <span class='bg-neutral-700 px-1 rounded text-blue-500'>def</span> keyword to define a procedure.</li>
+        <li>Write your instructions inside an indented block.</li>
+      </ul>
+      This function displays a welcome message.
+
+  - title: "Parts of a Procedure"
+    keyPoints:
+      - "Procedures can have parameters (inputs)"
+      - "Parameters are variables used inside the procedure"
+      - "You can define procedures with or without parameters"
+    jsCode: |
+      // Function with parameters
+      function multiplyNumbers(a, b) {
+          console.log(a * b);
+      }
+    jsExplanation: |
+      In JavaScript, parameters go inside the parentheses.<br>
+      <ul>
+        <li><span class='bg-neutral-700 px-1 rounded text-red-500'>a</span> and <span class='bg-neutral-700 px-1 rounded text-red-500'>b</span> are parameters.</li>
+        <li>The function multiplies them and prints the result.</li>
+      </ul>
+      You can use any number of parameters.
+    pyCode: |
+      # Function with parameters
+      def multiply_numbers(a, b):
+          print(a * b)
+    pyExplanation: |
+      In Python, parameters go inside the parentheses.<br>
+      <ul>
+        <li><span class='bg-neutral-700 px-1 rounded text-blue-500'>a</span> and <span class='bg-neutral-700 px-1 rounded text-blue-500'>b</span> are parameters.</li>
+        <li>The function multiplies them and prints the result.</li>
+      </ul>
+      You can use any number of parameters.
+
+  - title: "Calling a Procedure"
+    keyPoints:
+      - "Call a procedure by its name"
+      - "Provide arguments if it has parameters"
+      - "Arguments are the actual values you use"
+    jsCode: |
+      // Call the function with arguments
+      multiplyNumbers(3, 4); // Output: 12
+      multiplyNumbers(7, 2); // Output: 14
+    jsExplanation: |
+      When you call a procedure, you use its name and provide arguments.<br>
+      <ul>
+        <li><span class='bg-neutral-700 px-1 rounded text-red-500'>multiplyNumbers(3, 4)</span> calls the function with 3 and 4.</li>
+        <li>The function prints 12.</li>
+      </ul>
+      Arguments are the actual values you use when calling the procedure.
+    pyCode: |
+      # Call the function with arguments
+      multiply_numbers(3, 4)  # Output: 12
+      multiply_numbers(7, 2)  # Output: 14
+    pyExplanation: |
+      When you call a procedure, you use its name and provide arguments.<br>
+      <ul>
+        <li><span class='bg-neutral-700 px-1 rounded text-blue-500'>multiply_numbers(3, 4)</span> calls the function with 3 and 4.</li>
+        <li>The function prints 12.</li>
+      </ul>
+      Arguments are the actual values you use when calling the procedure.
+
+  - title: "Using Return Statements"
+    keyPoints:
+      - "Use <span class='bg-neutral-700 px-1 rounded text-blue-500'>return</span> to send a value back"
+      - "Return ends the procedure immediately"
+      - "Returned values can be used elsewhere in your code"
+    jsCode: |
+      function addNumbers(a, b) {
+          let sum = a + b;
+          return sum;
       }
 
-      greet("Alice");  // Output: Hello, Alice!
+      let result = addNumbers(5, 7);
+      console.log(result); // Output: 12
     jsExplanation: |
-      In JavaScript, a procedure is called a "<span class='text-green-200'>function</span>". Functions are like little machines that do a specific job for you.<br>
-      To create a function, use the <span class='bg-neutral-700 px-1 rounded text-green-200'>function</span> keyword, give it a name (like <span class='bg-neutral-700 px-1 rounded text-green-200'>greet</span>), and tell it what to do inside curly braces <span class='bg-neutral-700 px-1 rounded text-green-200'>{}</span>.<br><br>
-      <span class='underline'>In this example:</span>
+      In JavaScript, <span class='bg-neutral-700 px-1 rounded text-red-500'>return</span> sends a value back.<br>
       <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-green-200'>function greet(name)</span> creates a function called <span class='font-bold'>greet</span> that takes one input, <span class='font-bold'>name</span>.</li>
-        <li>Inside the function, <span class='bg-neutral-700 px-1 rounded text-green-200'>console.log</span> prints a message to the screen: "Hello, [name]!"</li>
+        <li>The function adds two numbers and returns the sum.</li>
+        <li>You can store the returned value in a variable.</li>
       </ul>
-      To use the function, call it by its name and give it a value for <span class='font-bold'>name</span>. For example, <span class='bg-neutral-700 px-1 rounded text-green-200'>greet("Alice")</span> tells the function to say "Hello, Alice!".
+      <span class='bg-neutral-700 px-1 rounded text-red-500'>return</span> ends the function and gives back the result.
     pyCode: |
-      def greet(name):
-          print(f"Hello, {name}!")
+      def add_numbers(a, b):
+          sum_value = a + b
+          return sum_value
 
-      greet("Alice")  # Output: Hello, Alice!
+      answer = add_numbers(5, 7)
+      print(answer)  # Output: 12
     pyExplanation: |
-      In Python, a procedure is also called a "<span class='text-blue-200'>function</span>". Functions are like helpers that do a specific task for you.<br>
-      To create a function, use the <span class='bg-neutral-700 px-1 rounded text-blue-200'>def</span> keyword, give it a name (like <span class='bg-neutral-700 px-1 rounded text-blue-200'>greet</span>), and write what it should do inside an indented block.<br><br>
-      <span class='underline'>In this example:</span>
+      In Python, <span class='bg-neutral-700 px-1 rounded text-blue-500'>return</span> sends a value back.<br>
       <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-blue-200'>def greet(name):</span> creates a function called <span class='font-bold'>greet</span> that takes one input, <span class='font-bold'>name</span>.</li>
-        <li>Inside the function, <span class='bg-neutral-700 px-1 rounded text-blue-200'>print</span> displays a message: "Hello, [name]!"</li>
+        <li>The function adds two numbers and returns the sum.</li>
+        <li>You can store the returned value in a variable.</li>
       </ul>
-      To use the function, call it by its name and give it a value for <span class='font-bold'>name</span>. For example, <span class='bg-neutral-700 px-1 rounded text-blue-200'>greet("Alice")</span> tells the function to say "Hello, Alice!".
-
-  - title: "Passing Arguments"
-    keyPoints:
-      - "Arguments are values passed to procedures"
-      - "Use <span class='bg-neutral-700 px-1 rounded text-blue-200'>parameters</span> to define expected inputs"
-      - "Python and JavaScript support <span class='bg-neutral-700 px-1 rounded text-green-200'>default arguments</span>"
-    jsCode: |
-      function greet(name = "Guest") {
-          console.log(`Hello, ${name}!`);
-      }
-
-      greet();  // Output: Hello, Guest!
-      greet("Alice");  // Output: Hello, Alice!
-    jsExplanation: |
-      In JavaScript, you can give your function a <span class='bg-neutral-700 px-1 rounded text-green-200'>default value</span> for its input. This is like saying, "If you don't tell me what to use, I'll use this instead."<br><br>
-      <span class='underline'>In this example:</span>
-      <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-green-200'>function greet(name = "Guest")</span> creates a function called <span class='font-bold'>greet</span> with a default value of "Guest" for <span class='font-bold'>name</span>.</li>
-        <li>If you call <span class='bg-neutral-700 px-1 rounded text-green-200'>greet()</span> without giving it a name, it will use "Guest" and say "Hello, Guest!".</li>
-        <li>If you call <span class='bg-neutral-700 px-1 rounded text-green-200'>greet("Alice")</span>, it will use "Alice" and say "Hello, Alice!".</li>
-      </ul>
-      Default values make your functions more flexible and easier to use.
-    pyCode: |
-      def greet(name="Guest"):
-          print(f"Hello, {name}!")
-
-      greet()  # Output: Hello, Guest!
-      greet("Alice")  # Output: Hello, Alice!
-    pyExplanation: |
-      In Python, you can give your function a <span class='bg-neutral-700 px-1 rounded text-blue-200'>default value</span> for its input. This means the function will use the default value if you don't provide one.<br><br>
-      <span class='underline'>In this example:</span>
-      <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-blue-200'>def greet(name="Guest"):</span> creates a function called <span class='font-bold'>greet</span> with a default value of "Guest" for <span class='font-bold'>name</span>.</li>
-        <li>If you call <span class='bg-neutral-700 px-1 rounded text-blue-200'>greet()</span> without giving it a name, it will use "Guest" and say "Hello, Guest!".</li>
-        <li>If you call <span class='bg-neutral-700 px-1 rounded text-blue-200'>greet("Alice")</span>, it will use "Alice" and say "Hello, Alice!".</li>
-      </ul>
-      Default values are helpful because they make your functions work even when you forget to provide an input.
-
-  - title: "Returning Values"
-    keyPoints:
-      - "Procedures can return values"
-      - "Use <span class='bg-neutral-700 px-1 rounded text-blue-200'>return</span> in both Python and JavaScript"
-      - "Returned values can be used in expressions"
-    jsCode: |
-      function add(a, b) {
-          return a + b;
-      }
-
-      const result = add(3, 5);
-      console.log(result);  // Output: 8
-    jsExplanation: |
-      In JavaScript, functions can <span class='bg-neutral-700 px-1 rounded text-purple-200'>return a value</span>. This means the function gives something back when it's done.<br><br>
-      <span class='underline'>In this example:</span>
-      <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-green-200'>function add(a, b)</span> creates a function called <span class='font-bold'>add</span> that takes two inputs, <span class='font-bold'>a</span> and <span class='font-bold'>b</span>.</li>
-        <li><span class='bg-neutral-700 px-1 rounded text-purple-200'>return a + b;</span> tells the function to give back the sum of <span class='font-bold'>a</span> and <span class='font-bold'>b</span>.</li>
-      </ul>
-      When you call <span class='bg-neutral-700 px-1 rounded text-green-200'>add(3, 5)</span>, the function adds 3 and 5, and gives back 8. You can store this result in a variable (like <span class='font-bold'>result</span>) or use it directly.
-    pyCode: |
-      def add(a, b):
-          return a + b
-
-      result = add(3, 5)
-      print(result)  # Output: 8
-    pyExplanation: |
-      In Python, functions can <span class='bg-neutral-700 px-1 rounded text-purple-200'>return a value</span>. This means the function gives something back when it's done.<br><br>
-      <span class='underline'>In this example:</span>
-      <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-blue-200'>def add(a, b):</span> creates a function called <span class='font-bold'>add</span> that takes two inputs, <span class='font-bold'>a</span> and <span class='font-bold'>b</span>.</li>
-        <li><span class='bg-neutral-700 px-1 rounded text-purple-200'>return a + b</span> tells the function to give back the sum of <span class='font-bold'>a</span> and <span class='font-bold'>b</span>.</li>
-      </ul>
-      When you call <span class='bg-neutral-700 px-1 rounded text-blue-200'>add(3, 5)</span>, the function adds 3 and 5, and gives back 8. You can store this result in a variable (like <span class='font-bold'>result</span>) or use it directly.
-
-  - title: "Anonymous Functions"
-    keyPoints:
-      - "Anonymous functions are functions without a name"
-      - "Use <span class='bg-neutral-700 px-1 rounded text-blue-200'>lambda</span> in Python for anonymous functions"
-      - "Use <span class='bg-neutral-700 px-1 rounded text-green-200'>arrow functions</span> in JavaScript"
-    jsCode: |
-      const square = (x) => x * x;
-      console.log(square(4));  // Output: 16
-    jsExplanation: |
-      In JavaScript, anonymous functions are functions without a name. They are often used for short, simple tasks.<br><br>
-      <span class='underline'>In this example:</span>
-      <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-green-200'>const square = (x) => x * x;</span> creates an anonymous function that takes one input, <span class='font-bold'>x</span>, and returns <span class='font-bold'>x * x</span>.</li>
-        <li>You can call this function using the variable <span class='font-bold'>square</span>. For example, <span class='bg-neutral-700 px-1 rounded text-green-200'>square(4)</span> returns 16.</li>
-      </ul>
-      Anonymous functions are useful when you don't need to reuse the function's name.
-    pyCode: |
-      square = lambda x: x * x
-      print(square(4))  # Output: 16
-    pyExplanation: |
-      In Python, anonymous functions are functions without a name. They are often used for short, simple tasks.<br><br>
-      <span class='underline'>In this example:</span>
-      <ul>
-        <li><span class='bg-neutral-700 px-1 rounded text-blue-200'>lambda x: x * x</span> creates an anonymous function that takes one input, <span class='font-bold'>x</span>, and returns <span class='font-bold'>x * x</span>.</li>
-        <li>You can assign this function to a variable (like <span class='font-bold'>square</span>) and call it using that variable. For example, <span class='bg-neutral-700 px-1 rounded text-blue-200'>square(4)</span> returns 16.</li>
-      </ul>
-      Anonymous functions are great for quick, one-line operations.
+      <span class='bg-neutral-700 px-1 rounded text-blue-500'>return</span> ends the function and gives back the result.
