@@ -2,7 +2,7 @@ Title: "Lists"
 Description: "Lists are one of the most essential data structures in programming. They allow developers to store, organize, and manipulate groups of values efficiently. This section introduces list concepts, operations, and use cases."
 Topics:
   - title: "Creating Lists"
-    link: "#creating-lists"  # Relative link to the section in the notebook
+    link: "#creating-lists"  # Matches the id in the notebook
     keyPoints:
       - "Define lists with []"
       - "Store multiple values"
@@ -10,23 +10,23 @@ Topics:
     description: "Learn how to create lists in Python and JavaScript using square brackets, and understand how lists can hold numbers, strings, or even other lists."
 
   - title: "Accessing Elements"
-    link: "#accessing-elements"  # Relative link to the section in the notebook
+    link: "#accessing-elements"  # Matches the id in the notebook
     keyPoints:
-      - "Use indexes"
+      - "Use indexes to access items"
       - "Start counting at 0"
       - "Access first, last, or middle elements"
     description: "Lists are ordered, so every item has a position. Master how to retrieve elements using indexes, including the first and last values."
 
   - title: "Modifying Lists"
-    link: "#modifying-elements"  # Relative link to the section in the notebook
+    link: "#modifying-elements"  # Matches the id in the notebook
     keyPoints:
       - "Change values by index"
-      - "Add items with append/push"
-      - "Remove items with pop/splice"
+      - "Update existing items"
+      - "Keep lists dynamic"
     description: "Lists are dynamic. You can change items, add new values, or remove existing ones to keep your data updated."
 
   - title: "Adding Elements"
-    link: "#adding-elements"  # Relative link to the section in the notebook
+    link: "#adding-elements"  # Matches the id in the notebook
     keyPoints:
       - "Use append/push to add to the end"
       - "Insert at specific positions"
@@ -34,7 +34,7 @@ Topics:
     description: "Learn how to add elements to lists in Python and JavaScript, whether at the end or at specific positions."
 
   - title: "Removing Elements"
-    link: "#removing-elements"  # Relative link to the section in the notebook
+    link: "#removing-elements"  # Matches the id in the notebook
     keyPoints:
       - "Remove by value"
       - "Remove by index"
@@ -42,15 +42,15 @@ Topics:
     description: "Learn how to remove elements from lists in Python and JavaScript, whether by value, index, or from the end."
 
   - title: "Looping Through Lists"
-    link: "#looping-through-lists"  # Relative link to the section in the notebook
+    link: "#looping-through-lists"  # Matches the id in the notebook
     keyPoints:
-      - "For loops"
-      - "For...of / ForEach"
+      - "Use for loops to iterate"
       - "Process each element"
+      - "Use for...of in JavaScript"
     description: "Often you need to perform actions on every element in a list. Learn how to loop through lists in both Python and JavaScript."
 
   - title: "Summary"
-    link: "#summary"  # Relative link to the section in the notebook
+    link: "#summary"  # Matches the id in the notebook
     keyPoints:
       - "Review list creation"
       - "Access, modify, and remove elements"
