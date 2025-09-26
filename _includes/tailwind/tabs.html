@@ -1,0 +1,88 @@
+<div class="container mx-auto p-6 bg-neutral-900 text-neutral-100 rounded-lg shadow-md">
+  <!-- Tabs Navigation -->
+  <div class="flex flex-wrap justify-center space-x-4 border-b border-neutral-800 pb-4">
+    {% assign data = site.data[page.infoGraph] %}
+    {% for topic in data.Topics %}
+      <button class="tab-button px-4 py-2 text-neutral-400 hover:text-neutral-200 border-b-2 border-transparent hover:border-neutral-500 focus:outline-none focus:border-neutral-500" data-tab="tab-{{ forloop.index }}">
+        {{ topic.title }}
+      </button>
+    {% endfor %}
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content mt-6">
+    {% for topic in data.Topics %}
+      <div id="tab-{{ forloop.index }}" class="tab-pane {% if forloop.first %}{% else %}hidden{% endif %}">
+        <h2 class="text-2xl font-bold mb-4 text-neutral-300">{{ topic.title }}</h2>
+        
+        <!-- Key Points -->
+        <div class="bg-neutral-800 p-4 rounded-lg shadow mb-6">
+          <h3 class="text-lg font-semibold mb-2 text-neutral-400">Key Points</h3>
+          <ul class="list-disc list-inside text-sm text-neutral-300">
+            {% for point in topic.keyPoints %}
+              <li>{{ point | markdownify }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- JavaScript Section -->
+        <div class="bg-neutral-800 p-4 rounded-lg shadow mb-6">
+          <h3 class="text-lg font-semibold mb-2 text-neutral-400">JavaScript</h3>
+          <!-- Code Block -->
+          <pre class="bg-neutral-900 text-sm text-neutral-300 p-4 rounded-lg overflow-x-auto">
+<code>
+{{ topic.jsCode }}
+</code>
+          </pre>
+          <!-- Explanation -->
+          <div class="mt-4">
+            <p class="text-sm text-neutral-300">
+              {{ topic.jsExplanation | markdownify }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Python Section -->
+        <div class="bg-neutral-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2 text-neutral-400">Python</h3>
+          <!-- Code Block -->
+          <pre class="bg-neutral-900 text-sm text-neutral-300 p-4 rounded-lg overflow-x-auto">
+<code>
+{{ topic.pyCode }}
+</code>
+          </pre>
+          <!-- Explanation -->
+          <div class="mt-4">
+            <p class="text-sm text-neutral-300">
+              {{ topic.pyExplanation | markdownify }}
+            </p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // JavaScript for Tab Functionality
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabPanes = document.querySelectorAll('.tab-pane');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const target = button.getAttribute('data-tab');
+
+      // Hide all tab panes
+      tabPanes.forEach(pane => pane.classList.add('hidden'));
+
+      // Remove active state from all buttons
+      tabButtons.forEach(btn => btn.classList.remove('text-neutral-200', 'border-neutral-500'));
+
+      // Show the target tab pane
+      document.getElementById(target).classList.remove('hidden');
+
+      // Add active state to the clicked button
+      button.classList.add('text-neutral-200', 'border-neutral-500');
+    });
+  });
+</script>
