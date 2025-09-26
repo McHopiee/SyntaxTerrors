@@ -12,7 +12,7 @@
   <!-- Tab Content -->
   <div class="tab-content mt-6">
     {% for topic in data.Topics %}
-      <div id="tab-{{ forloop.index }}" class="tab-pane {% if forloop.first %}{% else %}hidden{% endif %}">
+      <div id="tab-{{ forloop.index }}" class="tab-pane transition-opacity duration-300 ease-in-out {% if forloop.first %}opacity-100{% else %}opacity-0 hidden{% endif %}">
         <h2 class="text-2xl font-bold mb-4 text-neutral-300">{{ topic.title }}</h2>
         
         <!-- Key Points -->
@@ -64,7 +64,7 @@
 </div>
 
 <script>
-  // JavaScript for Tab Functionality
+  // Smooth fade transition for tabs
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabPanes = document.querySelectorAll('.tab-pane');
 
@@ -72,16 +72,23 @@
     button.addEventListener('click', () => {
       const target = button.getAttribute('data-tab');
 
-      // Hide all tab panes
-      tabPanes.forEach(pane => pane.classList.add('hidden'));
+      tabPanes.forEach(pane => {
+        if (pane.id === target) {
+          pane.classList.remove('hidden');
+          setTimeout(() => {
+            pane.classList.add('opacity-100');
+            pane.classList.remove('opacity-0');
+          }, 10);
+        } else {
+          pane.classList.remove('opacity-100');
+          pane.classList.add('opacity-0');
+          setTimeout(() => {
+            pane.classList.add('hidden');
+          }, 300); // match duration-300
+        }
+      });
 
-      // Remove active state from all buttons
       tabButtons.forEach(btn => btn.classList.remove('text-neutral-200', 'border-neutral-500'));
-
-      // Show the target tab pane
-      document.getElementById(target).classList.remove('hidden');
-
-      // Add active state to the clicked button
       button.classList.add('text-neutral-200', 'border-neutral-500');
     });
   });
