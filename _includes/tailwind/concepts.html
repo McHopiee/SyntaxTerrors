@@ -1,0 +1,65 @@
+<div>
+  {% assign data = site.data[page.infoGraph] %}
+  <div class="container">
+    <!-- Navigation Tabs -->
+    <div class="flex justify-center space-x-4 bg-gray-100 p-4 rounded-lg shadow-md mb-6">
+      {% for topic in data.Topics %}
+        <!-- Use the full path from the YAML file to link directly to the notebook sections -->
+        <a href="{{ topic.link }}" class="text-blue-500 hover:underline font-semibold" aria-label="Jump to {{ topic.title }}">
+          {{ topic.title }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Header Section -->
+    <div class="p-6 rounded-lg shadow-md">
+      <h1 class="text-5xl mb-4">{{ data.Title }}</h1>
+      <p class="text-lg mb-4">{{ data.Description }}</p>
+    </div>
+
+    <!-- Rows Section -->
+    <div id="rows" class="grid gap-4 p-6">
+      {% for topic in data.Topics %}
+        <div class="grid grid-cols-3 gap-4 items-center p-4 rounded-lg shadow-md">
+          <!-- Image Column -->
+          {% if topic.image %}
+            <div class="text-center">
+              <a href="{{ site.baseurl }}{{ topic.link }}">
+                <img src="{{ site.baseurl }}/images/{{ topic.image }}" alt="{{ topic.alt | default: topic.title }}" class="rounded-lg mx-auto h-40 object-cover">
+              </a>
+            </div>
+            <!-- Key Points and Description Columns -->
+            <div>
+              <h3 class="text-xl font-semibold mb-2">{{ topic.title }}</h3>
+              <ul class="list-disc list-inside">
+                {% for point in topic.keyPoints %}
+                  <li>{{ point }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">{{ topic.subtitle }}</h3>
+              <p class="text-sm">{{ topic.description }}</p>
+            </div>
+          {% else %}
+            <!-- If no image, adjust layout -->
+            <div class="col-span-3 grid grid-cols-2 gap-4">
+              <div>
+                <h3 class="text-xl font-semibold mb-2">{{ topic.title }}</h3>
+                <h3 class="text-xl font-semibold mb-2">{{ topic.subtitle }}</h3>
+                <p class="text-sm">{{ topic.description }}</p>
+              </div>
+              <div>
+                <ul class="list-disc list-inside">
+                  {% for point in topic.keyPoints %}
+                    <li>{{ point }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
