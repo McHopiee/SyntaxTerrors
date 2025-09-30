@@ -2,10 +2,10 @@ Title: "Lists"
 Description: "Lists are one of the most essential data structures in programming. They allow developers to store, organize, and manipulate groups of values efficiently. This section introduces list concepts, operations, and use cases."
 topButtons:
   - text: "JavaScript Lists Homework"
-    url: "/csp/big-idea-three/lists/p3/homeworkjavascript"
+    url: "https://mchopiee.github.io/SyntaxTerrors/csp/big-idea-three/lists/p3/homeworkjavascript"
     color: "bg-yellow-600 hover:bg-yellow-700 text-white"
   - text: "Python Lists Homework"
-    url: "/csp/big-idea-three/lists/p3/homeworkpython"
+    url: "https://mchopiee.github.io/SyntaxTerrors/csp/big-idea-three/lists/p3/homeworkpython"
     color: "bg-blue-600 hover:bg-blue-700 text-white"
 Topics:
   - title: "Creating Lists"
