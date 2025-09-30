@@ -2,7 +2,7 @@ Title: "Lists"
 Description: "Lists are one of the most essential data structures in programming. They allow developers to store, organize, and manipulate groups of values efficiently. This section introduces list concepts, operations, and use cases."
 topButton:
   text: "Go to Lists Homework"
-  url: "/csp/big-idea-three/lists/p3/listshw"
+  url: "SyntaxTerrors/csp/big-idea-three/lists/p3/listshw"
   color: "bg-blue-600 hover:bg-blue-700 text-white"
 Topics:
   - title: "Creating Lists"
