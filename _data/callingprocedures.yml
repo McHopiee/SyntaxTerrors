@@ -1,5 +1,14 @@
 Title: "Calling Procedures"
 Description: "A procedure is a group of programming instructions, also known as a function or method. Procedures let you reuse code and organize your program. Learn how to define, call, and use procedures in Python and JavaScript."
+
+homeworkLinks:
+  - text: "JavaScript Calling Procedures Homework"
+    url: "https://mchopiee.github.io/SyntaxTerrors/csp/big-idea-three/calling-procedures/homeworkjavascript"
+    color: "bg-yellow-600 hover:bg-yellow-700 text-white"
+  - text: "Python Calling Procedures Homework"
+    url: "https://mchopiee.github.io/SyntaxTerrors/csp/big-idea-three/calling-procedures/p3/homeworkpython"
+    color: "bg-blue-600 hover:bg-blue-700 text-white"
+
 Topics:
   - title: "What is a Procedure?"
     keyPoints:
