@@ -190,3 +190,16 @@ Topics:
       </ul>
       Looping lets you process every element in a list.
 
+  - title: "Try It Yourself: Print the First Item"
+    keyPoints:
+      - "Practice accessing elements in a list or array"
+      - "Remember: Indexing starts at 0 in both Python and JavaScript"
+    jsExplanation: |
+      To print the first item in the array, use the correct index and the print statement for JavaScript. Make sure you access the first element and display it in the console.
+    jsExpectedOutput: "apple"
+    pyExplanation: |
+      To print the first item in the list, use the correct index and the print function in Python. Make sure you access the first element and display it.
+    pyExpectedOutput: "apple"
+    jsTryItDescription: "Print the first fruit in the list using console.log and array indexing. The expected output should be 'apple'."
+    pyTryItDescription: "Print the first fruit in the list using print and list indexing. The expected output should be 'apple'."
+
