@@ -1,6 +1,43 @@
 Title: "Procedural Abstraction"
 Description: "Procedures are a powerful example of abstraction in programming. Procedural abstraction lets you use procedures without knowing exactly how they work, making code simpler, more readable, and easier to manage."
 Topics:
+  - title: "Developing vs. Calling a Procedure"
+    keyPoints:
+      - "Developing a procedure means writing the code for what it does."
+      - "Calling a procedure means using it in your program."
+      - "You must develop (define) a procedure before you can call it."
+    jsCode: |
+      // Developing (defining) the procedure
+      function double(num) {
+          console.log(num * 2);
+      }
+      // Calling the procedure
+      double(5);
+    jsExplanation: |
+      <b>Developing</b> a procedure is when you write the function itself, including its name, parameters, and instructions.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-red-500'>function double(num) { console.log(num * 2); }</span></li>
+      </ul>
+      <b>Calling</b> a procedure is when you use its name to make it run.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-red-500'>double(5);</span></li>
+      </ul>
+    pyCode: |
+      # Developing (defining) the procedure
+      def double(num):
+          print(num * 2)
+      # Calling the procedure
+      double(5)
+    pyExplanation: |
+      <b>Developing</b> a procedure is when you write the function, including its name, parameters, and instructions.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-blue-500'>def double(num): print(num * 2)</span></li>
+      </ul>
+      <b>Calling</b> a procedure is when you use its name to make it run.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-blue-500'>double(5)</span></li>
+      </ul>
+
   - title: "What is Procedural Abstraction?"
     keyPoints:
       - "Procedures are a special form of abstraction"
@@ -212,3 +249,22 @@ Topics:
         <li>This makes your code easier to maintain and update.</li>
       </ul>
       Procedural abstraction helps keep your programs flexible.
+
+  - title: "Try It Yourself: Write and Call a Procedure"
+    keyPoints:
+      - "Practice creating your own procedure"
+      - "Call your procedure with different values"
+    jsExplanation: |
+      Create a function named <span class='bg-neutral-700 px-1 rounded text-red-500'>greet</span> that takes a parameter for the name.<br>
+      Inside the function, print a greeting using <span class='bg-neutral-700 px-1 rounded text-red-500'>console.log()</span>.<br>
+      Finally, call your function with the argument <span class='bg-neutral-700 px-1 rounded text-red-500'>"Alex"</span>.
+    jsTryItDescription: "Write a function called greet that takes a name and prints 'Hello, ' plus the name. Then call your function with the name 'Alex'."
+    jsTryItHint: "Remember to use function greet(name) { ... } and call it with greet('Alex')."
+    jsExpectedOutput: "Hello, Alex"
+    pyExplanation: |
+      Create a function named <span class='bg-neutral-700 px-1 rounded text-blue-500'>greet</span> that takes a parameter for the name.<br>
+      Inside the function, print a greeting using <span class='bg-neutral-700 px-1 rounded text-blue-500'>print()</span>.<br>
+      Finally, call your function with the argument <span class='bg-neutral-700 px-1 rounded text-blue-500'>"Alex"</span>.
+    pyTryItDescription: "Write a function called greet that takes a name and prints 'Hello, ' plus the name. Then call your function with the name 'Alex'."
+    pyTryItHint: "Remember to use def greet(name): and call it with greet('Alex')."
+    pyExpectedOutput: "Hello, Alex"
