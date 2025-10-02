@@ -5,7 +5,7 @@
   {% if data.topButtons %}
     <div class="flex justify-center gap-4 mb-6">
       {% for btn in data.topButtons %}
-        <a href="{{ btn.url }}"
+        <a href="{{ site.baseurl }}{{ btn.url }}"
            class="px-5 py-2 rounded-lg font-semibold shadow transition-colors duration-200 {{ btn.color }}">
           {{ btn.text }}
         </a>
