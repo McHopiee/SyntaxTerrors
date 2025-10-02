@@ -158,7 +158,10 @@
             document.getElementById('js-try-output-' + idx).innerHTML = `<span class="text-green-400 font-bold">✅ Correct!</span> Output: <pre class="inline">${output}</pre>`;
             success = true;
           } else {
-            document.getElementById('js-try-output-' + idx).innerHTML = `<span class="text-red-400 font-bold">❌ Not quite.</span> Output: <pre class="inline">${output}</pre><br>Expected: <pre class="inline">${expectedOutput}</pre>`;
+            let hint = textarea.getAttribute('data-hint');
+            let hintHtml = hint ? `<div class="text-yellow-300 text-xs mt-2">Hint: ${hint}</div>` : "";
+            document.getElementById('js-try-output-' + idx).innerHTML =
+              `<span class="text-red-400 font-bold">❌ Not quite.</span> Output: <pre class="inline">${output}</pre><br>Expected: <pre class="inline">${expectedOutput}</pre>${hintHtml}`;
           }
         } catch (e) {
           document.getElementById('js-try-output-' + idx).innerHTML = `<span class="text-red-400 font-bold">⚠️ Error:</span> ${e.message}`;
@@ -209,8 +212,11 @@
           if (output === expectedOutput) {
             outputDiv.innerHTML = `<span class="text-green-400 font-bold">✅ Correct!</span> Output: <pre class="inline">${output}</pre>`;
           } else {
-            outputDiv.innerHTML = `<span class="text-red-400 font-bold">❌ Not quite.</span> Output: <pre class="inline">${output || '[blank]'}</pre><br>Expected: <pre class="inline">${expectedOutput}</pre>`;
-            if (!output) {
+            let hint = textarea.getAttribute('data-hint');
+            let hintHtml = hint ? `<div class="text-yellow-300 text-xs mt-2">Hint: ${hint}</div>` : "";
+            outputDiv.innerHTML =
+              `<span class="text-red-400 font-bold">❌ Not quite.</span> Output: <pre class="inline">${output || '[blank]'}</pre><br>Expected: <pre class="inline">${expectedOutput}</pre>${hintHtml}`;
+            if (!output && !hint) {
               outputDiv.innerHTML += `<div class="text-yellow-300 text-xs mt-2">Hint: Make sure your code prints something and does not have errors.</div>`;
             }
           }
