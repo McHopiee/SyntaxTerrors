@@ -44,10 +44,12 @@
           <h3 class="text-lg font-semibold mb-2 text-neutral-400">JavaScript</h3>
           <!-- Code Block -->
           <pre class="bg-neutral-900 text-sm text-neutral-300 p-4 rounded-lg overflow-x-auto">
-<code>
+<code id="js-example-code-{{ forloop.index }}">
 {{ topic.jsCode }}
 </code>
           </pre>
+          <button class="run-js-example px-3 py-1 bg-blue-700 rounded text-white font-semibold hover:bg-blue-800 transition mb-2" data-index="{{ forloop.index }}">Run Example</button>
+          <div id="js-example-output-{{ forloop.index }}" class="bg-neutral-900 p-3 rounded text-sm mt-2"></div>
           <!-- Explanation -->
           <div class="mt-4">
             <p class="text-sm text-neutral-300">
@@ -64,7 +66,7 @@
           {% if topic.jsTryItDescription %}
             <div class="mb-2 text-neutral-200 text-sm">{{ topic.jsTryItDescription }}</div>
           {% endif %}
-          <textarea id="js-try-code-{{ forloop.index }}" class="w-full p-2 rounded bg-neutral-900 text-neutral-100 mb-2" rows="5" placeholder="Type your JavaScript code here..." data-expected-output="{{ topic.jsExpectedOutput | strip_newlines }}"></textarea>
+          <textarea id="js-try-code-{{ forloop.index }}" class="w-full p-2 rounded bg-neutral-900 text-neutral-100 mb-2" rows="5" placeholder="Type your JavaScript code here..." data-expected-output="{{ topic.jsExpectedOutput | strip_newlines }}" data-hint="{{ topic.jsTryItHint | escape }}"></textarea>
           <button class="js-try-btn px-4 py-2 bg-blue-700 rounded text-white font-semibold hover:bg-blue-800 transition mb-2" data-index="{{ forloop.index }}">Run Code</button>
           <div id="js-try-output-{{ forloop.index }}" class="bg-neutral-900 p-3 rounded text-sm mt-2"></div>
         </div>
@@ -76,10 +78,12 @@
           <h3 class="text-lg font-semibold mb-2 text-neutral-400">Python</h3>
           <!-- Code Block -->
           <pre class="bg-neutral-900 text-sm text-neutral-300 p-4 rounded-lg overflow-x-auto">
-<code>
+<code id="py-example-code-{{ forloop.index }}">
 {{ topic.pyCode }}
 </code>
           </pre>
+          <button class="run-py-example px-3 py-1 bg-green-700 rounded text-white font-semibold hover:bg-green-800 transition mb-2" data-index="{{ forloop.index }}">Run Example</button>
+          <div id="py-example-output-{{ forloop.index }}" class="bg-neutral-900 p-3 rounded text-sm mt-2"></div>
           <!-- Explanation -->
           <div class="mt-4">
             <p class="text-sm text-neutral-300">
@@ -96,7 +100,7 @@
           {% if topic.pyTryItDescription %}
             <div class="mb-2 text-neutral-200 text-sm">{{ topic.pyTryItDescription }}</div>
           {% endif %}
-          <textarea id="py-try-code-{{ forloop.index }}" class="w-full p-2 rounded bg-neutral-900 text-neutral-100 mb-2" rows="5" placeholder="Type your Python code here..." data-expected-output="{{ topic.pyExpectedOutput | strip_newlines }}"></textarea>
+          <textarea id="py-try-code-{{ forloop.index }}" class="w-full p-2 rounded bg-neutral-900 text-neutral-100 mb-2" rows="5" placeholder="Type your Python code here..." data-expected-output="{{ topic.pyExpectedOutput | strip_newlines }}" data-hint="{{ topic.pyTryItHint | escape }}"></textarea>
           <button class="py-try-btn px-4 py-2 bg-green-700 rounded text-white font-semibold hover:bg-green-800 transition mb-2" data-index="{{ forloop.index }}">Run Code</button>
           <div id="py-try-output-{{ forloop.index }}" class="bg-neutral-900 p-3 rounded text-sm mt-2"></div>
         </div>
@@ -136,7 +140,7 @@
     });
   });
 
-  // JS Try It Yourself Handler
+  // JS Try It Yourself Handler & Run Example
   document.addEventListener('DOMContentLoaded', function() {
     // JavaScript Try It
     document.querySelectorAll('.js-try-btn').forEach(function(btn) {
@@ -168,6 +172,29 @@
         }
         console.log = originalLog;
         return success;
+      });
+    });
+
+    // JavaScript Run Example
+    document.querySelectorAll('.run-js-example').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const idx = btn.getAttribute('data-index');
+        const code = document.getElementById('js-example-code-' + idx).innerText;
+        let output = '';
+        const originalLog = console.log;
+        console.log = function(msg) {
+          output += msg + '\n';
+        };
+        try {
+          eval(code);
+          output = output.trim();
+          document.getElementById('js-example-output-' + idx).innerHTML =
+            `<pre class="bg-neutral-950 text-green-300 p-2 rounded">${output || '[no output]'}</pre>`;
+        } catch (e) {
+          document.getElementById('js-example-output-' + idx).innerHTML =
+            `<span class="text-red-400 font-bold">⚠️ Error:</span> ${e.message}`;
+        }
+        console.log = originalLog;
       });
     });
 
@@ -220,6 +247,49 @@
               outputDiv.innerHTML += `<div class="text-yellow-300 text-xs mt-2">Hint: Make sure your code prints something and does not have errors.</div>`;
             }
           }
+        })
+        .catch(e => {
+          outputDiv.innerHTML = `<span class="text-red-400 font-bold">⚠️ Error:</span> ${e.message}`;
+        });
+      });
+    });
+
+    // Python Run Example
+    document.querySelectorAll('.run-py-example').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const idx = btn.getAttribute('data-index');
+        const code = document.getElementById('py-example-code-' + idx).innerText;
+        const outputDiv = document.getElementById('py-example-output-' + idx);
+        outputDiv.innerHTML = `<span class="text-yellow-400 font-bold">⏳ Running Python code...</span>`;
+        fetch("https://emkc.org/api/v2/piston/execute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            language: "python",
+            version: "3.10.0",
+            files: [{ name: "main.py", content: code }]
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          let output = "";
+          let error = "";
+          if (data.run && typeof data.run.output === "string") {
+            output = data.run.output;
+          } else if (typeof data.output === "string") {
+            output = data.output;
+          }
+          if (data.run && typeof data.run.stderr === "string" && data.run.stderr.trim() !== "") {
+            error = data.run.stderr;
+          } else if (typeof data.stderr === "string" && data.stderr.trim() !== "") {
+            error = data.stderr;
+          }
+          output = output.trim();
+          if (error) {
+            outputDiv.innerHTML = `<span class="text-red-400 font-bold">⚠️ Python Error:</span> <pre class="inline">${error}</pre>`;
+            return;
+          }
+          outputDiv.innerHTML = `<pre class="bg-neutral-950 text-green-300 p-2 rounded">${output || '[no output]'}</pre>`;
         })
         .catch(e => {
           outputDiv.innerHTML = `<span class="text-red-400 font-bold">⚠️ Error:</span> ${e.message}`;
