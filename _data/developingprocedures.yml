@@ -1,5 +1,12 @@
 Title: "Procedural Abstraction"
 Description: "Procedures are a powerful example of abstraction in programming. Procedural abstraction lets you use procedures without knowing exactly how they work, making code simpler, more readable, and easier to manage."
+topButtons:
+  - text: "JavaScript Developing Procedures Homework"
+    url: "/csp/big-idea-three/developingprocedures/javascript/hw/p3/syntaxterrors"
+    color: "bg-yellow-600 hover:bg-yellow-700 text-white"
+  - text: "Python Developing Procedures Homework"
+    url: "/csp/big-idea-three/developingprocedures/python/hw/p3/syntaxterrors"
+    color: "bg-blue-600 hover:bg-blue-700 text-white"
 Topics:
   - title: "Developing vs. Calling a Procedure"
     keyPoints:

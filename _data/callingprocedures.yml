@@ -3,10 +3,10 @@ Description: "A procedure is a group of programming instructions, also known as 
 
 topButtons:
   - text: "JavaScript Calling Procedures Homework"
-    url: "/csp/big-idea-three/calling-procedures/homeworkjavascript"
+    url: "/csp/big-idea-three/calling-procedures/javascript/hw/p3/syntaxterrors"
     color: "bg-yellow-600 hover:bg-yellow-700 text-white"
   - text: "Python Calling Procedures Homework"
-    url: "/csp/big-idea-three/calling-procedures/p3/homeworkpython"
+    url: "/csp/big-idea-three/calling-procedures/python/hw/p3/syntaxterrors"
     color: "bg-blue-600 hover:bg-blue-700 text-white"
 
 Topics:
