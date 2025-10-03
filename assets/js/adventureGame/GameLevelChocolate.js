@@ -42,7 +42,7 @@ class GameLevelChocolate {
       keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
 
-    //npcs
+    // NPCs
     const sprite_src_yellow = path + "/images/mm/yellowanim.png"; 
     const YELLOW_SCALE_FACTOR = 6;
     const sprite_data_yellow = {
@@ -56,7 +56,7 @@ class GameLevelChocolate {
       pixels: { height: 35, width: 180 },
       orientation: { rows: 1, columns: 5 },
       down: { row: 0, start: 0, columns: 5 },
-      left: { row: 0, start: 0, columns: 5 }, // fixed row index
+      left: { row: 0, start: 0, columns: 5 },
       right: { row: 0, start: 0, columns: 5 },
       up: { row: 0, start: 0, columns: 5 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
@@ -66,7 +66,7 @@ class GameLevelChocolate {
     const GREEN_SCALE_FACTOR = 6;
     const sprite_data_green = {
       id: 'Green M&M',
-      greeting: "Pick your favorite theme.  The Makefile includes targets to copy the appropriate config, Gemfile, and layouts from _themes/<theme>/ Here are the specific targets you can make: (1) make use-minima (2) make use-text (3) make use-cayman (4) make use-so-simpleand run the make command!",
+      greeting: "Pick your favorite theme. The Makefile includes targets to copy the appropriate config, Gemfile, and layouts from _themes/<theme>/ Here are the specific targets you can make: (1) make use-minima (2) make use-text (3) make use-cayman (4) make use-so-simple and run the make command!",
       src: sprite_src_green,
       SCALE_FACTOR: GREEN_SCALE_FACTOR,
       STEP_FACTOR: 1000,
@@ -75,7 +75,7 @@ class GameLevelChocolate {
       pixels: { height: 36, width: 108 },
       orientation: { rows: 1, columns: 3 },
       down: { row: 0, start: 0, columns: 3 },
-      left: { row: 0, start: 0, columns: 3 }, // fixed row index
+      left: { row: 0, start: 0, columns: 3 },
       right: { row: 0, start: 0, columns: 3 },
       up: { row: 0, start: 0, columns: 3 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
@@ -94,17 +94,16 @@ class GameLevelChocolate {
       pixels: { height: 36, width: 144 },
       orientation: { rows: 1, columns: 4 },
       down: { row: 0, start: 0, columns: 4 },
-      left: { row: 0, start: 0, columns: 4 }, // fixed row index
+      left: { row: 0, start: 0, columns: 4 },
       right: { row: 0, start: 0, columns: 4 },
       up: { row: 0, start: 0, columns: 4 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
       interact: () => {
-        this.showImagePopup(path + "/images/mm/rainbowmm.png"); // show image
-        this.triggerQuiz(); // then run quiz
+        this.triggerQuiz(); // quiz first, image after
       }
     };
 
-    // ===== QUIZ SETUP (inline, no extra file) =====
+    // ===== QUIZ SETUP =====
     this.quizQuestions = [
       {
         question: "Which of the following is a valid command from the Makefile?",
@@ -153,18 +152,18 @@ class GameLevelChocolate {
           if (correct) {
             alert("Correct! 🎉");
             currentIndex++;
-            nextQuestion(); // next
+            nextQuestion(); // next question
           } else {
             alert("Oops, try again!");
           }
         });
       } else {
-        alert("🎉 Quiz complete!");
         this.quizContainer.style.display = "none"; // hide when done
+        this.showImagePopup("/images/mm/rainbowmm.png"); // 🎉 show image AFTER quiz
       }
     };
 
-    nextQuestion(); // start
+    nextQuestion(); // start quiz
   }
 
   showQuestion(index, callback) {
@@ -186,12 +185,10 @@ class GameLevelChocolate {
   }
 
   showImagePopup(src) {
-    // Remove old popup if it exists
     if (this.imagePopup) {
       document.body.removeChild(this.imagePopup);
     }
 
-    // Create container
     this.imagePopup = document.createElement("div");
     this.imagePopup.style.position = "absolute";
     this.imagePopup.style.top = "50%";
@@ -202,14 +199,17 @@ class GameLevelChocolate {
     this.imagePopup.style.border = "3px solid black";
     this.imagePopup.style.zIndex = "10000";
 
-    // Create image
     const img = document.createElement("img");
     img.src = src;
-    img.style.maxWidth = "400px";
-    img.style.maxHeight = "300px";
+    img.style.width = "400px"; // Explicit width
+    img.style.height = "300px"; // Explicit height
+    img.alt = "Congratulations!"; // Add alt text for accessibility
+    img.onerror = () => {
+      console.error(`Failed to load image: ${src}`);
+      img.style.display = "none"; // Hide the image if it fails to load
+    };
     this.imagePopup.appendChild(img);
 
-    // Close button
     const btn = document.createElement("button");
     btn.textContent = "Close";
     btn.style.display = "block";
@@ -220,7 +220,6 @@ class GameLevelChocolate {
     };
     this.imagePopup.appendChild(btn);
 
-    // Add to DOM
     document.body.appendChild(this.imagePopup);
   }
 }

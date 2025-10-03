@@ -1,5 +1,14 @@
 Title: "Calling Procedures"
 Description: "A procedure is a group of programming instructions, also known as a function or method. Procedures let you reuse code and organize your program. Learn how to define, call, and use procedures in Python and JavaScript."
+
+topButtons:
+  - text: "JavaScript Calling Procedures Homework"
+    url: "/csp/big-idea-three/calling-procedures/homeworkjavascript"
+    color: "bg-yellow-600 hover:bg-yellow-700 text-white"
+  - text: "Python Calling Procedures Homework"
+    url: "/csp/big-idea-three/calling-procedures/p3/homeworkpython"
+    color: "bg-blue-600 hover:bg-blue-700 text-white"
+
 Topics:
   - title: "What is a Procedure?"
     keyPoints:
@@ -58,6 +67,43 @@ Topics:
         <li>The function multiplies them and prints the result.</li>
       </ul>
       You can use any number of parameters.
+    
+  - title: "Developing vs. Calling a Procedure"
+    keyPoints:
+      - "Developing a procedure means writing the code for what it does."
+      - "Calling a procedure means using it in your program."
+      - "You must develop (define) a procedure before you can call it."
+    jsCode: |
+      // Developing (defining) the procedure
+      function double(num) {
+          console.log(num * 2);
+      }
+      // Calling the procedure
+      double(5);
+    jsExplanation: |
+      <b>Developing</b> a procedure is when you write the function itself, including its name, parameters, and instructions.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-red-500'>function double(num) { console.log(num * 2); }</span></li>
+      </ul>
+      <b>Calling</b> a procedure is when you use its name to make it run.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-red-500'>double(5);</span></li>
+      </ul>
+    pyCode: |
+      # Developing (defining) the procedure
+      def double(num):
+          print(num * 2)
+      # Calling the procedure
+      double(5)
+    pyExplanation: |
+      <b>Developing</b> a procedure is when you write the function, including its name, parameters, and instructions.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-blue-500'>def double(num): print(num * 2)</span></li>
+      </ul>
+      <b>Calling</b> a procedure is when you use its name to make it run.<br>
+      <ul>
+        <li>Example: <span class='bg-neutral-700 px-1 rounded text-blue-500'>double(5)</span></li>
+      </ul>
 
   - title: "Calling a Procedure"
     keyPoints:
@@ -121,3 +167,22 @@ Topics:
         <li>You can store the returned value in a variable.</li>
       </ul>
       <span class='bg-neutral-700 px-1 rounded text-blue-500'>return</span> ends the function and gives back the result.
+
+  - title: "Try It Yourself: Call a Procedure"
+    keyPoints:
+      - "Practice calling a procedure with an argument"
+      - "See how the procedure uses your input"
+    jsExplanation: |
+      Create a function named <span class='bg-neutral-700 px-1 rounded text-red-500'>doubleNumber</span> that takes a number as a parameter.<br>
+      Inside the function, print double the value using <span class='bg-neutral-700 px-1 rounded text-red-500'>console.log()</span>.<br>
+      Finally, call your function with the argument <span class='bg-neutral-700 px-1 rounded text-red-500'>6</span>.
+    jsTryItDescription: "Write a function called doubleNumber that takes a number and prints double its value. Then call your function with the number 6."
+    jsTryItHint: "Remember to use function doubleNumber(num) { ... } and call it with doubleNumber(6)."
+    jsExpectedOutput: "12"
+    pyExplanation: |
+      Create a function named <span class='bg-neutral-700 px-1 rounded text-blue-500'>double_number</span> that takes a number as a parameter.<br>
+      Inside the function, print double the value using <span class='bg-neutral-700 px-1 rounded text-blue-500'>print()</span>.<br>
+      Finally, call your function with the argument <span class='bg-neutral-700 px-1 rounded text-blue-500'>6</span>.
+    pyTryItDescription: "Write a function called double_number that takes a number and prints double its value. Then call your function with the number 6."
+    pyTryItHint: "Remember to use def double_number(num): and call it with double_number(6)."
+    pyExpectedOutput: "12"
