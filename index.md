@@ -18,6 +18,9 @@ hide: true
   <button class="btn-md btn-rounded btn-rose" onclick="window.location.href='./teamphilosophy.html'">
       𝐓𝐞𝐚𝐦 𝐏𝐡𝐢𝐥𝐨𝐬𝐨𝐩𝐡𝐲 
   </button>
+  <button class="btn-md btn-rounded btn-rose" onclick="window.location.href='./foodmodulestoryboard.html'">
+      Food Module Storyboard
+  </button>
   <button class="btn-md btn-rounded btn-magenta" onclick="window.location.href='https://mchopiee.github.io/SyntaxTerrors/search/'">
       𝐒𝐞𝐚𝐫𝐜𝐡 
   </button>
