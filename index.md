@@ -16,7 +16,7 @@ hide: true
       𝐆𝐢𝐭𝐇𝐮𝐛 𝐏𝐚𝐠𝐞𝐬
   </button>
   <button class="btn-md btn-rounded btn-rose" onclick="window.location.href='./teamphilosophy.html'">
-      𝐓𝐞𝐚𝐦 𝐏𝐡𝐢𝐥𝐨𝐬𝐨𝐩𝐡𝐲 
+      𝐓𝐞𝐚𝐦 𝐏𝐡𝐢𝐥𝐨𝐬𝐨𝐩𝐡𝐲   
   </button>
    
   
