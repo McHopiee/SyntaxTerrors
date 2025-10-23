@@ -1,0 +1,189 @@
+# Food Module — Storyboard & Technical Spec (Road-Trip Quest: SD → LA → SF → SEA)
+Title: "Food Module — Road-Trip Quest"
+Description: "A progressive, gamified learning segment using a coastal road-trip (San Diego → Los Angeles → San Francisco → Seattle) to teach relational database fundamentals through food-themed pitstop tasks."
+LearningObjectives:
+  - "Understand and implement basic CRUD operations against a relational database."
+  - "Design a normalized schema for a food-related domain (dishes, ingredients, join tables)."
+  - "Write parameterized queries and avoid SQL injection."
+  - "Use transactions to maintain consistency across multi-table updates."
+  - "Build and consume RESTful endpoints for create/read/update/delete operations."
+  - "Implement client-side UX for creating, editing, and archiving records with accessibility in mind."
+  - "Demonstrate soft-delete vs hard-delete and archival strategies."
+  - "Interpret aggregated results using GROUP BY, COUNT, SUM and simple analytics queries."
+  - "Apply basic indexing and measure performance differences for common queries."
+
+Topics:
+  - city: "sd"
+    title: "San Diego — Build the Baja Bowl"
+    subtitle: "CREATE: INSERT & Client Form"
+    description: "Introductory pitstop where learners create their first dish (Baja Bowl) by adding dishes, ingredients, and join records. Focus on form validation, required fields, and POST endpoints."
+    image: "/images/baja.jpg"
+    alt: "Baja Bowl — San Diego"
+    keyPoints:
+      - "Design dish creation form (name, category, ingredients list, calories, photo upload)."
+      - "Create dish, ingredient, and dish_ingredients records atomically."
+      - "Client-side validation and server-side request validation."
+      - "Seeded examples: Fish Tacos, California Burrito, Baja Bowl."
+    tasks:
+      - "Create Dish form: name, category, ingredients (name, qty, unit), calories, photo"
+      - "POST /api/dishes to create dish + dish_ingredients"
+      - "Unit test: POST /api/dishes returns 201 and created resource"
+      - "UI: show toast 'Baja Bowl added — +50 XP'"
+      - "Seed at least three dishes for SD"
+    xp: 50
+    badge: "First Insert"
+
+  - city: "la"
+    title: "Los Angeles — Food Truck Tasting"
+    subtitle: "READ: SELECT, Filtering & Index Basics"
+    description: "Search and filter pitstop. Learners implement list and detail views, paginated queries, and basic full-text search. Demonstrates the value of indices and query examples in a Dev Console."
+    image: "/images/foodtruck.jpg"
+    alt: "LA Food Trucks"
+    keyPoints:
+      - "Implement GET /api/dishes with filters: city, ingredient, min_cal, pagination."
+      - "Show example SQL and safe parameterization."
+      - "Add index on ingredient.name (demo indexed field)."
+      - "Seeded examples: Korean BBQ, Street Tacos, Food Truck specials."
+    tasks:
+      - "List & detail views with pagination and filters"
+      - "Dev Console: show safe sample SQL queries"
+      - "Measure (simulated) index performance for ingredient searches"
+      - "Student writes a query to find dishes containing 'halibut'"
+      - "Seed at least three dishes for LA"
+    xp: 10
+    badge: "Query Master"
+
+  - city: "sf"
+    title: "San Francisco — Gourmet Pop-Up"
+    subtitle: "UPDATE: Transactions, Concurrency & Rollback"
+    description: "Advanced pitstop focused on multi-table updates wrapped in transactions. Learners preview diffs, simulate concurrent edits, and implement optimistic locking and rollback behavior."
+    image: "/images/sourdough.jpg"
+    alt: "San Francisco Sourdough & Pop-Up"
+    keyPoints:
+      - "Wrap multi-table updates (dish + dish_ingredients) in transactions."
+      - "Implement optimistic locking (versioning) and conflict resolution UI."
+      - "Provide a 'Preview Changes' modal showing diffs before commit."
+      - "Simulate concurrent edits and demonstrate rollback."
+    tasks:
+      - "Edit dish UI: change ingredient quantities, swap ingredients, rename dish"
+      - "PUT /api/dishes/:id with transaction semantics"
+      - "PATCH /api/dishes/:id for partial updates"
+      - "Simulate conflicting updates and show conflict modal"
+      - "Unit/integration test for transaction rollback"
+    xp: 40
+    badge: "Transactional Pro"
+
+  - city: "sea"
+    title: "Seattle — Sustainable Cleanup & Analytics"
+    subtitle: "DELETE: Soft Delete, Hard Delete, Joins & Aggregation"
+    description: "Final pitstop where learners archive or delete dishes (clam chowder centerpiece). Focus on soft-delete patterns, cascading hard deletes, archival strategies, and analytics queries for reporting."
+    image: "/images/breadbowl.jpg"
+    alt: "Seattle Clam Chowder in Sourdough Bread Bowl"
+    keyPoints:
+      - "Implement deleted_at soft-delete column and archive toggle in UI."
+      - "Hard delete with cascading rules to remove dish_ingredients links."
+      - "Analytics: top ingredients, average calories by city, dishes per category."
+      - "Seed includes 'Clam Chowder in a Sourdough Bread Bowl' for SEA."
+    tasks:
+      - "Add 'Archive dish' UI toggle (sets deleted_at)"
+      - "Hard delete flow with confirmation and cascade cleanup"
+      - "Analytics dashboard with GROUP BY queries"
+      - "Seed at least three dishes for SEA including clam chowder"
+      - "Acceptance tests for archival visibility and hard-delete cascade"
+    xp: 20
+    badge: "Cleanup Crew"
+
+Storyboard:
+  - title: "Opening — Road-Trip Map"
+    city: "global"
+    goal: "Orient the player visually: show route with SD → LA → SF → SEA markers and a progress/gas XP gauge. 'Start trip' unlocks San Diego."
+    ux:
+      - "Map SVG with four markers and tooltips"
+      - "Progress bar / gas gauge representing XP"
+      - "'Start trip' button to fetch the SD manifest"
+    tech: "Client route state machine; server returns pitstop config at /api/module/food/manifest; seed data returned on initial load."
+
+  - title: "San Diego — Build the Baja Bowl"
+    city: "sd"
+    goal: "Learner creates a dish using a form; dish and ingredient records are created with join entries. Reward XP and update pitstop pantry."
+    ux:
+      - "Create Dish form with accessible fields and photo upload"
+      - "Toast notification on success (+50 XP)"
+      - "Pantry list showing created dishes for SD"
+    tech: "POST /api/dishes creates dish, ingredients, and dish_ingredients in a transaction; server-side validation and file storage (S3/local)."
+
+  - title: "Los Angeles — Food Truck Tasting"
+    city: "la"
+    goal: "Learner filters and searches dishes, uses Dev Console to see safe sample SQL, and observes index impact."
+    ux:
+      - "Filter panel (ingredient, min_cal, category) with keyboard support"
+      - "Dev Console panel showing parameterized SQL examples"
+      - "Paginated list with quick detail drawer"
+    tech: "GET /api/dishes supports pagination and filter params; database index demo (ingredient.name) and simulated metrics."
+
+  - title: "San Francisco — Gourmet Pop-Up"
+    city: "sf"
+    goal: "Learner edits a menu with transactional updates, previews diffs, and resolves concurrent edit conflicts."
+    ux:
+      - "Edit modal with 'Preview Changes' diff"
+      - "Conflict resolution modal when version mismatch occurs"
+      - "Clear success/failure feedback for transactions"
+    tech: "PUT/PATCH endpoints wrap multi-table updates in transactions; optimistic locking via version column; rollback simulation endpoints for testing."
+
+  - title: "Seattle — Sustainable Cleanup with Clam Chowder"
+    city: "sea"
+    goal: "Learner archives or hard-deletes the clam chowder, observes cascading effects, and views analytics reports."
+    ux:
+      - "Archive toggle and archived list in admin view"
+      - "Hard delete confirmation modal with cascade warning"
+      - "Analytics dashboard with charts and exportable CSV"
+    tech: "Soft delete implemented with deleted_at; hard deletes cascade to dish_ingredients; analytics endpoints aggregate data with GROUP BY."
+
+Analytics:
+  - "Top ingredients used across all cities (ingredient name, usage_count)."
+  - "Average calories by city."
+  - "Number of dishes per category (bowl/taco/salad/etc.)."
+  - "Total archived vs active dishes (by city)."
+  - "Most common pairings (joined ingredient pairs) for advanced analytic example."
+
+AcceptanceCriteria:
+  - "San Diego: Created dish is visible in SD pitstop pantry (GET /api/dishes?city=sd)."
+  - "Los Angeles: Filter by ingredient and city returns correct results and uses at least one indexed field in the demo."
+  - "San Francisco: Transaction rollback behavior is verified with integration tests (failed nested operation leaves DB consistent)."
+  - "Seattle: Soft archive hides items from normal lists but they appear in archived admin list; hard delete cascades remove related records."
+  - "Secure queries: endpoints use parameterized queries (no SQL injection)."
+  - "Accessibility: Forms and controls meet ARIA and keyboard navigation standards; color contrast >= 4.5:1."
+  - "Seed data: At least three seeded dishes per city (including clam chowder in Seattle)."
+  - "Story/UX copy exists for each pitstop."
+
+TaskChecklist:
+  - "DB schema & migrations (dishes, ingredients, dish_ingredients, audit/versioning, deleted_at)"
+  - "Seed data for SD, LA, SF, SEA (3+ dishes per city)"
+  - "API endpoints: CRUD for dishes, ingredients, analytics endpoints"
+  - "Frontend map & pitstop flow with unlocking state"
+  - "San Diego: create form + validation"
+  - "Los Angeles: filters, pagination, Dev Console"
+  - "San Francisco: edit UI, transactions, conflict modal"
+  - "Seattle: archive/hard delete UI + analytics dashboard"
+  - "Gamification: XP, badges, progress tracking"
+  - "Testing: unit tests, integration tests for transactions and rollback"
+  - "Accessibility audit and remediation"
+  - "Documentation & teacher guide"
+
+Seeds:
+  - "San Diego":
+      - "Baja Bowl"
+      - "Fish Tacos (Baja-style)"
+      - "California Burrito"
+  - "Los Angeles":
+      - "Korean BBQ Bowl"
+      - "Street Al Pastor Tacos"
+      - "Food Truck Special"
+  - "San Francisco":
+      - "Clam Chowder (pop-up style)"
+      - "Mission Burrito"
+      - "Gourmet Cioppino"
+  - "Seattle":
+      - "Pike Place Clam Chowder in Sourdough Bread Bowl"
+      - "Fresh Salmon Plate"
+      - "Dungeness Crab Roll"
